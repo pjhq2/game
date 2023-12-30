@@ -19,7 +19,7 @@ class 캐릭터():
         self.이름       = 이름
         self.레벨       = 1
         self.직업       = '초보자'
-        self.공격력     = 10
+        self.공격력     = 100
         self.HP         = 2000
         self.MP         = 100
         self.명중       = 10
@@ -68,7 +68,7 @@ class 캐릭터():
                 elif i==2: self.INT += random.randint(1, 2)
                 elif i==3: self.CON += random.randint(1, 2)
                 elif i==4: self.LUK += random.randint(0, 2)
-        if self.직업 == '전사':
+        elif self.직업 == '전사':
             for i in range(5):
                 if   i==0: self.STR += random.randint(2, 3)
                 elif i==1: self.DEX += random.randint(1, 2)
@@ -82,13 +82,14 @@ class 캐릭터():
                 elif i==2: self.INT += random.randint(0, 1)
                 elif i==3: self.CON += random.randint(0, 1)
                 elif i==4: self.LUK += random.randint(2, 3)
-        self.공격력 = 10   + self.STR * 1
+        self.공격력 = 100  + self.STR * 1
         self.치명타 = 0.2  + self.DEX * 0.002
         self.명중   = 10   + self.DEX * 2
         self.회복   = 5    + self.INT * 3
         self.방어력 = 50   + self.CON * 2
         self.HP     = 2000 + self.CON * 15
         self.회피   = 0.1  + self.LUK * 0.001
+        self.저장()
 
     def 장착_무기(self, 무기):
         for key, value in 무기.추가능력치.items():
@@ -139,11 +140,11 @@ class 캐릭터():
         f = open(f'./save/{self.이름}.info', 'w')
         f.write(f'이름 : {self.이름}\n')
         f.write(f'레벨 : {self.레벨}\n')
-        f.write(f'STR  : {self.STR}\n')
-        f.write(f'DEX  : {self.DEX}\n')
-        f.write(f'INT  : {self.INT}\n')
-        f.write(f'CON  : {self.CON}\n')
-        f.write(f'LUK  : {self.LUK}\n')
+        f.write(f'STR : {self.STR}\n')
+        f.write(f'DEX : {self.DEX}\n')
+        f.write(f'INT : {self.INT}\n')
+        f.write(f'CON : {self.CON}\n')
+        f.write(f'LUK : {self.LUK}\n')
         f.write(f'직업 : {self.직업}\n')
         f.write(f'공격력 : {self.공격력}\n')
         f.write(f'HP : {self.HP}\n')
@@ -268,6 +269,7 @@ class 캐릭터():
                 elif key2 == '증폭': 임시스킬.증폭 = float(value)
             if 임시스킬.이름 != '임시스킬':
                 self.스킬리스트.append(임시스킬)
+            
         f.close()
         Town.캐릭터딕셔너리[f'{self.이름}'] = self
         return self

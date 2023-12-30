@@ -8,7 +8,7 @@ from dual             import dual
 from hunt             import hunt
 from character        import 캐릭터
 
-import os
+import os, time
 
 def basic_sequence():
     # 캐릭터 생성 & 무기/스킬 장착 & 저장
@@ -22,15 +22,13 @@ def basic_sequence():
     # 몬스터 생성
     주황버섯 = create_monster('주황버섯')
     # 몬스터 사냥 10회
-    for _ in range(10): hunt(만패, 주황버섯)
+    for _ in range(1): hunt(만패, 주황버섯)
     # 캐릭터 저장
     만패.저장()
 
 def load_sequence(닉네임):
     # 캐릭터 불러오기
-    불러온캐릭터 = 캐릭터().불러오기(닉네임)
-    불러온캐릭터.출력()
-    Town.캐릭터딕셔너리[닉네임].출력()
+    불러온캐릭터 = 캐릭터('불러온캐릭터').불러오기(닉네임)
     # 몬스터 사냥 10회
     create_monster('주황버섯')
     주황버섯 = Town.캐릭터딕셔너리['주황버섯']
