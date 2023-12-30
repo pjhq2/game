@@ -34,7 +34,7 @@ def load_sequence(닉네임):
     # 몬스터 사냥 10회
     create_monster('주황버섯')
     주황버섯 = Town.캐릭터딕셔너리['주황버섯']
-    for _ in range(850): hunt(불러온캐릭터, 주황버섯)
+    for _ in range(10): hunt(불러온캐릭터, 주황버섯)
     # 캐릭터 저장
     불러온캐릭터.저장()
     불러온캐릭터.출력()

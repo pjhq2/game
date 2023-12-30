@@ -135,7 +135,7 @@ class 캐릭터():
     def 저장(self):
         Town.캐릭터딕셔너리[f'{self.이름}'] = self
         if not os.path.isdir('./save'):
-            os.system('mkdir ./save')
+            os.mkdir('./save')
         f = open(f'./save/{self.이름}.info', 'w')
         f.write(f'이름 : {self.이름}\n')
         f.write(f'레벨 : {self.레벨}\n')
