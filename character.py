@@ -36,6 +36,8 @@ class 캐릭터():
         self.무기       = 무기()
         # 스킬
         self.스킬리스트 = []
+
+    def 처음생성(self):
         self.스킬리스트.append(스킬())  # 강타
 
     def 최종데미지(self):
@@ -258,8 +260,7 @@ class 캐릭터():
         for key1 in 스킬딕셔너리.keys():
             임시스킬 = 스킬('임시스킬')
             for key2, value in 스킬딕셔너리[key1].items():
-                if key2 == '이름' and value == '강타': break
-
+                #if key2 == '이름' and value == '강타': break
                 if   key2 == '이름': 임시스킬.이름 = value
                 elif key2 == '레벨': 임시스킬.레벨 = int(value)
                 elif key2 == '등급': 임시스킬.등급 = int(value)

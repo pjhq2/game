@@ -24,14 +24,15 @@ class 무기():
         self.최종증폭       = 0
         self.추가능력치     = {}
         self.무기스킬리스트 = []
+        self.최고강화레벨   = 100
 
     def 강화레벨업(self):
-        강화등급업 = random.randint(1, 100)
+        파라미터 = random.randint(1, 100)
         self.강화레벨 += 1
         if self.강화레벨 % 2:
             self.강화최소데미지 += self.등급 - 1
             self.강화최대데미지 += self.등급
-            if 강화등급업 <= 50:
+            if 파라미터 <= 50:
                 self.강화증폭       += self.강화레벨 * (self.등급 + 1) / 100
         else:
             self.강화최소데미지 += self.등급

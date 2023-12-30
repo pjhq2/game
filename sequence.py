@@ -7,6 +7,8 @@ from create_monster   import create_monster
 from dual             import dual
 from hunt             import hunt
 from character        import 캐릭터
+from reinforce        import 무기강화
+from reinforce        import 스킬강화
 
 import os, time
 
@@ -33,6 +35,12 @@ def load_sequence(닉네임):
     create_monster('주황버섯')
     주황버섯 = Town.캐릭터딕셔너리['주황버섯']
     for _ in range(10): hunt(불러온캐릭터, 주황버섯)
+    # 무기 강화 10회
+    for _ in range(10): 무기강화(불러온캐릭터.무기)
+    # 스킬 강화 3회
+    for _ in range(3):
+        for i, 스킬 in enumerate(불러온캐릭터.스킬리스트):
+            불러온캐릭터.스킬리스트[i] = 스킬강화(스킬)
     # 캐릭터 저장
     불러온캐릭터.저장()
     불러온캐릭터.출력()

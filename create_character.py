@@ -16,6 +16,7 @@ def test_create_character():
 
 def create_character(닉네임):
     생성캐릭터 = 캐릭터(닉네임)
+    생성캐릭터.처음생성()
     생성캐릭터.출력()
     생성캐릭터.저장()
     return 생성캐릭터
