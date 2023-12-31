@@ -109,17 +109,19 @@ class 캐릭터():
             elif key=='INT': self.INT += value
             elif key=='CON': self.CON += value
             elif key=='LUK': self.LUK += value
+        if self.무기.이름 != '주먹': self.인벤토리.추가(self.무기)
         self.무기 = 무기
 
     def 해제_무기(self, 무기):
+        if self.무기.이름 != '주먹': return
         for key, value in self.무기.추가능력치.items():
             if   key=='STR': self.STR -= value
             elif key=='DEX': self.DEX -= value
             elif key=='INT': self.INT -= value
             elif key=='CON': self.CON -= value
             elif key=='LUK': self.LUK -= value
+        self.인벤토리.추가(self.무기)
         self.무기 = 무기()
-        
 
     def 출력(self):
         print('==============================')
@@ -287,7 +289,7 @@ class 캐릭터():
                     elif key_list[1] == '강화최대데미지': self.무기.강화최대데미지 = int(value)
                     elif key_list[1] == '강화증폭': self.무기.강화증폭 = float(value)
                     elif key_list[1] == '최종최소데미지': self.무기.최종최소데미지 = int(value)
-                    elif key_list[1] == '최종최대데미지': self.무기.최종최대데미지 = int(value) 
+                    elif key_list[1] == '최종최대데미지': self.무기.최종최대데미지 = int(value)
                     elif key_list[1] == '최종증폭': self.무기.최종증폭 = float(value)
                     elif key_list[1] == '추가능력치':
                         if   key_list[2] == 'STR': self.무기.추가능력치['STR'] = int(value)
@@ -307,7 +309,6 @@ class 캐릭터():
                     else:
                         스킬딕셔너리[key_list[1]][key_list[2]] = value
                 elif key_list[0] == '아이템':
-                    
                     if key_list[1] not in 아이템딕셔너리:
                         if key_list[2] == '스킬':
                             if key_list[3] not in 아이템스킬딕셔너리:
@@ -353,14 +354,16 @@ class 캐릭터():
                 elif key2 == '최고레벨': 임시무기스킬.최고레벨 = int(value)
             if 임시무기스킬.이름 != '임시무기스킬':
                 self.무기.무기스킬리스트.append(임시무기스킬)
+
         for key1 in 아이템딕셔너리.keys():
             임시무기 = 무기('임시무기')
             for key2, value in 아이템딕셔너리[key1].items():
+                print(key2)
                 if   key2 == 'id': 임시무기.id = int(value)
                 elif key2 == '이름': 임시무기.이름 = value
                 elif key2 == '등급': 임시무기.등급 = int(value)
                 elif key2 == '등급이름': 임시무기.등급이름 = value
-                elif key2 == '강화레벨': 임시무기.강화레벨 = value
+                elif key2 == '강화레벨': 임시무기.강화레벨 = int(value)
                 elif key2 == '최소데미지': 임시무기.최소데미지 = int(value)
                 elif key2 == '최대데미지': 임시무기.최대데미지 = int(value)
                 elif key2 == '증폭': 임시무기.증폭 = float(value)
@@ -378,16 +381,19 @@ class 캐릭터():
                     elif key_list[2] == 'LUK': 임시무기.추가능력치['LUK'] = int(value)
                 elif key2 == '최고강화레벨': 임시무기.최고강화레벨 = int(value)
                 elif key2 == '스킬':
+                    print('asdasdasd')
+                    print(아이템딕셔너리[key1]['스킬'])
                     임시스킬 = 스킬('임시스킬')
-                    for key3, value in 아이템딕셔너리[key1]['스킬'].items():    # 아이템스킬딕셔너리.items()
-                        if   key3 == '이름': 임시스킬.이름 = value
-                        elif key3 == '레벨': 임시스킬.레벨 = value
-                        elif key3 == '등급': 임시스킬.등급 = value
-                        elif key3 == '데미지': 임시스킬.데미지 = value
-                        elif key3 == '타입': 임시스킬.타입 = value
-                        elif key3 == '지속시간': 임시스킬.지속시간 = value
-                        elif key3 == '증폭': 임시스킬.증폭 = value
-                        elif key3 == '최고레벨': 임시스킬.최고레벨 = value
+                    for value_dict in 아이템딕셔너리[key1]['스킬'].values():    # 아이템스킬딕셔너리.items()
+                        for key3, value in value_dict.items():
+                            if   key3 == '이름': 임시스킬.이름 = value
+                            elif key3 == '레벨': 임시스킬.레벨 = int(value)
+                            elif key3 == '등급': 임시스킬.등급 = int(value)
+                            elif key3 == '데미지': 임시스킬.데미지 = int(value)
+                            elif key3 == '타입': 임시스킬.타입 = value
+                            elif key3 == '지속시간': 임시스킬.지속시간 = int(value)
+                            elif key3 == '증폭': 임시스킬.증폭 = float(value)
+                            elif key3 == '최고레벨': 임시스킬.최고레벨 = int(value)
                     if 임시스킬.이름 != '임시스킬':
                         임시무기.무기스킬리스트.append(임시스킬)
 
