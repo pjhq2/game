@@ -94,6 +94,12 @@ class 캐릭터():
         self.저장()
 
     def 장착_무기(self, 무기):
+        for key, value in self.무기.추가능력치.items():
+            if   key=='STR': self.STR -= value
+            elif key=='DEX': self.DEX -= value
+            elif key=='INT': self.INT -= value
+            elif key=='CON': self.CON -= value
+            elif key=='LUK': self.LUK -= value
         for key, value in 무기.추가능력치.items():
             if   key=='STR': self.STR += value
             elif key=='DEX': self.DEX += value
@@ -174,6 +180,7 @@ class 캐릭터():
         f.write(f'무기_최종최소데미지 : {self.무기.최종최소데미지}\n')
         f.write(f'무기_최종최대데미지 : {self.무기.최종최대데미지}\n')
         f.write(f'무기_최종증폭 : {self.무기.최종증폭}\n')
+        f.write(f'무기_최고강화레벨 : {self.무기.최고강화레벨}\n')
         for key, value in self.무기.추가능력치.items():
             f.write(f'무기_추가능력치_{key} : {value}\n')
         for i, 무기스킬 in enumerate(self.무기.무기스킬리스트, 1):
@@ -184,6 +191,7 @@ class 캐릭터():
             f.write(f'무기_스킬_{i}_타입 : {무기스킬.타입}\n')
             f.write(f'무기_스킬_{i}_지속시간 : {무기스킬.지속시간}\n')
             f.write(f'무기_스킬_{i}_증폭 : {무기스킬.증폭}\n')
+            f.write(f'무기_스킬_{i}_최고레벨 : {무기스킬.최고레벨}\n')
         for i, 스킬 in enumerate(self.스킬리스트, 1):
             f.write(f'스킬_{i}_이름 : {스킬.이름}\n')
             f.write(f'스킬_{i}_레벨 : {스킬.레벨}\n')
@@ -192,6 +200,7 @@ class 캐릭터():
             f.write(f'스킬_{i}_타입 : {스킬.타입}\n')
             f.write(f'스킬_{i}_지속시간 : {스킬.지속시간}\n')
             f.write(f'스킬_{i}_증폭 : {스킬.증폭}\n')
+            f.write(f'스킬_{i}_최고레벨 : {스킬.최고레벨}\n')
         f.close()
 
     def 불러오기(self, 캐릭터이름):
@@ -200,6 +209,7 @@ class 캐릭터():
         f = open(f'./save/{캐릭터이름}.info', 'r')
         캐릭터정보리스트 = []
         스킬딕셔너리 = {}
+        무기스킬딕셔너리 = {}
         while True:
             line = f.readline().rstrip()
             if not line:
@@ -251,6 +261,12 @@ class 캐릭터():
                         elif key_list[2] == 'INT': self.무기.추가능력치['INT'] = int(value)
                         elif key_list[2] == 'CON': self.무기.추가능력치['CON'] = int(value)
                         elif key_list[2] == 'LUK': self.무기.추가능력치['LUK'] = int(value)
+                    elif key_list[1] == '최고강화레벨': self.무기.최고강화레벨 = int(value)
+                    elif key_list[1] == '스킬':
+                        if key_list[2] not in 무기스킬딕셔너리:
+                            무기스킬딕셔너리[key_list[2]] = {key_list[3]: value}
+                        else:
+                            무기스킬딕셔너리[key_list[2]][key_list[3]] = value
                 elif key_list[0] == '스킬':
                     if key_list[1] not in 스킬딕셔너리:
                         스킬딕셔너리[key_list[1]] = {key_list[2]: value}
@@ -260,7 +276,6 @@ class 캐릭터():
         for key1 in 스킬딕셔너리.keys():
             임시스킬 = 스킬('임시스킬')
             for key2, value in 스킬딕셔너리[key1].items():
-                #if key2 == '이름' and value == '강타': break
                 if   key2 == '이름': 임시스킬.이름 = value
                 elif key2 == '레벨': 임시스킬.레벨 = int(value)
                 elif key2 == '등급': 임시스킬.등급 = int(value)
@@ -268,8 +283,23 @@ class 캐릭터():
                 elif key2 == '타입': 임시스킬.타입 = value
                 elif key2 == '지속시간': 임시스킬.지속시간 = int(value)
                 elif key2 == '증폭': 임시스킬.증폭 = float(value)
+                elif key2 == '최고레벨': 임시스킬.최고레벨 = int(value)
             if 임시스킬.이름 != '임시스킬':
                 self.스킬리스트.append(임시스킬)
+
+        for key1 in 무기스킬딕셔너리.keys():
+            임시무기스킬 = 스킬('임시무기스킬')
+            for key2, value in 무기스킬딕셔너리[key1].items():
+                if   key2 == '이름': 임시무기스킬.이름 = value
+                elif key2 == '레벨': 임시무기스킬.레벨 = int(value)
+                elif key2 == '등급': 임시무기스킬.등급 = int(value)
+                elif key2 == '데미지': 임시무기스킬.데미지 = int(value)
+                elif key2 == '타입': 임시무기스킬.타입 = value
+                elif key2 == '지속시간': 임시무기스킬.지속시간 = int(value)
+                elif key2 == '증폭': 임시무기스킬.증폭 = float(value)
+                elif key2 == '최고레벨': 임시무기스킬.최고레벨 = int(value)
+            if 임시무기스킬.이름 != '임시무기스킬':
+                self.무기.무기스킬리스트.append(임시무기스킬)
             
         f.close()
         Town.캐릭터딕셔너리[f'{self.이름}'] = self

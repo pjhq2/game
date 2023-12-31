@@ -50,12 +50,11 @@ class 무기():
         print(f'최소데미지 : {self.최소데미지}(+{self.강화최소데미지})')
         print(f'최대데미지 : {self.최대데미지}(+{self.강화최대데미지})')
         print(f'증폭       : {trunc(self.증폭, 2)}(+{trunc(self.강화증폭, 2)})')
+        print(f'무기데미지 : {int(self.최종증폭*self.최종최소데미지)} - {int(self.최종증폭*self.최종최대데미지)}')
         if len(self.무기스킬리스트) >= 1:
             print(f'무기스킬   : {self.무기스킬리스트[0].이름} Lv.{self.무기스킬리스트[0].레벨}')
             for 무기스킬 in self.무기스킬리스트[1:]:
                 print(f'             {무기스킬.이름} Lv.{무기스킬.레벨}')
-        
-        #print(f'최종데미지 : {int(self.최종증폭*self.최종최소데미지)} - {int(self.최종증폭*self.최종최대데미지)}')
         print(f'------------------------------')
 
 def 제작_나무몽둥이():
