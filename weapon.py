@@ -52,7 +52,8 @@ class 무기(아이템):
 
     def 출력(self):
         print(f'------------------------------')
-        gprint(f'{self.이름}(+{self.강화레벨})', self.등급)
+        gprint(f'{self.이름}', self.등급, end='')
+        print(f'(+{self.강화레벨})')
         print(f'등급       : {self.등급이름}')
         for key, value in self.추가능력치.items():
             print(f'{key}        : +{value}')
@@ -174,11 +175,11 @@ def 제작_그리폰():
     if 최소데미지등급 <= 1:
         그리폰.최소데미지 = 999
     elif 최소데미지등급 <= 10:
-        그리폰.최소데미지 = random.randint(320, 350)
+        그리폰.최소데미지 = random.randint(220, 250)
     elif 최소데미지등급 <= 50:
-        그리폰.최소데미지 = random.randint(300, 319)
+        그리폰.최소데미지 = random.randint(200, 219)
     else:
-        그리폰.최소데미지 = random.randint(280, 299)
+        그리폰.최소데미지 = random.randint(180, 199)
     if 최대데미지등급 <= 1:
         그리폰.최대데미지 = 999
     elif 최대데미지등급 <= 10:

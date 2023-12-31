@@ -1,3 +1,5 @@
+from master import fill_str_with_space
+
 from town             import Town
 from character        import 캐릭터
 from weapon           import 제작_진검, 제작_엑스칼리버
@@ -5,22 +7,6 @@ from color            import bcolors
 from create_character import create_character
 
 import random
-
-import unicodedata
-
-def fill_str_with_space(input_s="", max_size=60, fill_char=" "):
-    """
-    - 길이가 긴 문자는 2칸으로 체크하고, 짧으면 1칸으로 체크함. 
-    - 최대 길이(max_size)는 40이며, input_s의 실제 길이가 이보다 짧으면 
-    남은 문자를 fill_char로 채운다.
-    """
-    l = 0 
-    for c in input_s:
-        if unicodedata.east_asian_width(c) in ['F', 'W']:
-            l+=2
-        else: 
-            l+=1
-    return input_s+fill_char*(max_size-l)
 
 class DualInfo():
     def __init__(self, 캐릭터_1, 캐릭터_2):
@@ -92,7 +78,8 @@ def 듀얼공방(선공캐릭터, 후공캐릭터, 선공캐릭터_HP, 후공캐
     if 치명타적중: 선공캐릭터최종데미지_ = f'{bcolors.UNDERLINE}{선공캐릭터최종데미지_}{bcolors.ENDC}'
     if 회피성공:   막은피해_             = f'{bcolors.UNDERLINE}{막은피해_}{bcolors.ENDC}'
 
-    후공캐릭터_HP -= 최종피해
+    if 후공캐릭터_HP - 최종피해 <= 0: 후공캐릭터_HP = 0
+    else:                             후공캐릭터_HP -= 최종피해
     print('-'*출력최대길이 + ' '*6 + '-'*출력최대길이)
     #-------------------- Line 1 --------------------
     선공출력내용 = fill_str_with_space(f'{bcolors.BOLD}{선공캐릭터.이름}{bcolors.ENDC} Lv.{선공캐릭터.레벨}', 출력최대길이-7+8, ' ')
@@ -100,21 +87,28 @@ def 듀얼공방(선공캐릭터, 후공캐릭터, 선공캐릭터_HP, 후공캐
     후공출력내용 = fill_str_with_space(f'{bcolors.BOLD}{후공캐릭터.이름}{bcolors.ENDC} Lv.{후공캐릭터.레벨}', 출력최대길이-7+8, ' ')
     print(후공출력내용, end='DEFENSE\n')
     #-------------------- Line 2 --------------------
-    print(f'HP : {선공캐릭터_HP} / {선공캐릭터.HP}', end='')
-    print(' '*(출력최대길이-len(f'HP : {선공캐릭터_HP} / {선공캐릭터.HP}')-len(f'{str(선공캐릭터최종데미지)}')), end='')
+    선공캐릭터HP상태  = f'HP : {선공캐릭터_HP} / {선공캐릭터.HP}'
+    선공캐릭터HP상태_ = f'{bcolors.OKGREEN}{선공캐릭터HP상태}{bcolors.ENDC}'
+    print(선공캐릭터HP상태_, end='')
+    print(' '*(출력최대길이-len(선공캐릭터HP상태)-len(f'{str(선공캐릭터최종데미지)}')), end='')
     print(f'{선공캐릭터최종데미지_}', end='')
     print(' '*6, end='')
-    print(f'HP : {후공캐릭터_HP} / {후공캐릭터.HP}', end='')
-    print(' '*(출력최대길이-len(f'HP : {후공캐릭터_HP} / {후공캐릭터.HP}')-len(f'{str(막은피해)}')), end='')
+    후공캐릭터HP상태  = f'HP : {후공캐릭터_HP} / {후공캐릭터.HP}'
+    후공캐릭터HP상태_ = f'{bcolors.OKGREEN}{후공캐릭터HP상태}{bcolors.ENDC}'
+    print(후공캐릭터HP상태_, end='')
+    print(' '*(출력최대길이-len(후공캐릭터HP상태)-len(f'{str(막은피해)}')), end='')
     print(f'{막은피해_}')
     #-------------------- Line 3 --------------------
     print(' '*(출력최대길이-2*len(공격이름)) + 공격이름_)
     #------------------------------------------------
     print('-'*출력최대길이 + ' '*6 + '-'*출력최대길이)
     if 후공캐릭터_HP <= 0:
-        print(fill_str_with_space(f'{선공캐릭터.이름} WIN', 출력최대길이+6, ' '), end='')
-        print(f'{후공캐릭터.이름} LOSE')
-        return (1, 선공캐릭터_HP, 0)
+        승리메시지  = fill_str_with_space(f'{선공캐릭터.이름} WIN', 출력최대길이+6, ' ')
+        승리메시지_ = f'{선공캐릭터.이름} {bcolors.OKBLUE}WIN{bcolors.ENDC}'
+        패배메시지_ = f'{후공캐릭터.이름} {bcolors.FAIL}LOSE{bcolors.ENDC}'
+        print(승리메시지_, end=' '*(len(승리메시지)-len(f'{선공캐릭터.이름} WIN')))
+        print(패배메시지_)
+        return (1, 선공캐릭터_HP, 후공캐릭터_HP)
     #----------------------------------------------------------------------------------------------------
     # 후공
     공격 = random.choice(후공캐릭터.스킬리스트 + 후공캐릭터.무기.무기스킬리스트)
@@ -136,7 +130,8 @@ def 듀얼공방(선공캐릭터, 후공캐릭터, 선공캐릭터_HP, 후공캐
     if 치명타적중: 후공캐릭터최종데미지_ = f'{bcolors.UNDERLINE}{후공캐릭터최종데미지_}{bcolors.ENDC}'
     if 회피성공:   막은피해_             = f'{bcolors.UNDERLINE}{막은피해_}{bcolors.ENDC}'
 
-    선공캐릭터_HP -= 최종피해
+    if 선공캐릭터_HP - 최종피해 <= 0: 선공캐릭터_HP = 0
+    else:                             선공캐릭터_HP -= 최종피해
     print('-'*출력최대길이 + ' '*6 + '-'*출력최대길이)
     #-------------------- Line 1 --------------------
     선공출력내용 = fill_str_with_space(f'{bcolors.BOLD}{선공캐릭터.이름}{bcolors.ENDC} Lv.{선공캐릭터.레벨}', 출력최대길이-7+8, ' ')
@@ -144,20 +139,27 @@ def 듀얼공방(선공캐릭터, 후공캐릭터, 선공캐릭터_HP, 후공캐
     후공출력내용 = fill_str_with_space(f'{bcolors.BOLD}{후공캐릭터.이름}{bcolors.ENDC} Lv.{후공캐릭터.레벨}', 출력최대길이-7+8, ' ')
     print(후공출력내용, end='OFFENSE\n')
     #-------------------- Line 2 --------------------
-    print(f'HP : {선공캐릭터_HP} / {선공캐릭터.HP}', end='')
-    print(' '*(출력최대길이-len(f'HP : {선공캐릭터_HP} / {선공캐릭터.HP}')-len(f'{str(막은피해)}')), end='')
+    선공캐릭터HP상태  = f'HP : {선공캐릭터_HP} / {선공캐릭터.HP}'
+    선공캐릭터HP상태_ = f'{bcolors.OKGREEN}{선공캐릭터HP상태}{bcolors.ENDC}'
+    print(선공캐릭터HP상태_, end='')
+    print(' '*(출력최대길이-len(선공캐릭터HP상태)-len(f'{str(막은피해)}')), end='')
     print(f'{막은피해_}', end='')
     print(' '*6, end='')
-    print(f'HP : {후공캐릭터_HP} / {후공캐릭터.HP}', end='')
-    print(' '*(출력최대길이-len(f'HP : {후공캐릭터_HP} / {후공캐릭터.HP}')-len(f'{str(후공캐릭터최종데미지)}')), end='')
+    후공캐릭터HP상태  = f'HP : {후공캐릭터_HP} / {후공캐릭터.HP}'
+    후공캐릭터HP상태_ = f'{bcolors.OKGREEN}{후공캐릭터HP상태}{bcolors.ENDC}'
+    print(후공캐릭터HP상태_, end='')
+    print(' '*(출력최대길이-len(후공캐릭터HP상태)-len(f'{str(후공캐릭터최종데미지)}')), end='')
     print(f'{후공캐릭터최종데미지_}')
     #-------------------- Line 3 --------------------
     print(' '*(2*출력최대길이+6-2*len(공격이름)) + 공격이름_)
     #------------------------------------------------
     print('-'*출력최대길이 + ' '*6 + '-'*출력최대길이)
     if 선공캐릭터_HP <= 0:
-        print(fill_str_with_space(f'{선공캐릭터.이름} LOSE', 출력최대길이+6, ' '), end='')
-        print(f'{후공캐릭터.이름} WIN')
+        승리메시지_ = f'{후공캐릭터.이름} {bcolors.OKBLUE}WIN{bcolors.ENDC}'
+        패배메시지  = fill_str_with_space(f'{선공캐릭터.이름} LOSE', 출력최대길이+6, ' ')
+        패배메시지_ = f'{선공캐릭터.이름} {bcolors.FAIL}LOSE{bcolors.ENDC}'
+        print(패배메시지_, end=' '*(len(패배메시지)-len(f'{선공캐릭터.이름} LOSE')))
+        print(승리메시지_)
         return (1, 0, 후공캐릭터_HP)
     return (0, 선공캐릭터_HP, 후공캐릭터_HP)
     
