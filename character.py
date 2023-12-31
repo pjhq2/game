@@ -1,7 +1,8 @@
-from master import trunc
-from town   import Town
-from weapon import 무기
-from skill  import 스킬
+from master    import trunc
+from town      import Town
+from weapon    import 무기
+from skill     import 스킬
+from inventory import 인벤토리
 
 from color  import bcolors
 
@@ -32,6 +33,8 @@ class 캐릭터():
         self.속도       = 1000
         self.경험치     = 0
         self.필요경험치 = 2000
+        self.코인       = 0
+        self.인벤토리   = 인벤토리()
         # 장비
         self.무기       = 무기()
         # 스킬
@@ -142,7 +145,7 @@ class 캐릭터():
         print('==============================')
 
     def 저장(self):
-        Town.캐릭터딕셔너리[f'{self.이름}'] = self
+        Town.저장(self)
         if not os.path.isdir('./save'):
             os.mkdir('./save')
         f = open(f'./save/{self.이름}.info', 'w')
@@ -167,6 +170,7 @@ class 캐릭터():
         f.write(f'속도 : {self.속도}\n')
         f.write(f'경험치 : {self.경험치}\n')
         f.write(f'필요경험치 : {self.필요경험치}\n')
+        f.write(f'코인 : {self.코인}\n')
 
         f.write(f'무기_이름 : {self.무기.이름}\n')
         f.write(f'무기_등급 : {self.무기.등급}\n')
@@ -201,6 +205,33 @@ class 캐릭터():
             f.write(f'스킬_{i}_지속시간 : {스킬.지속시간}\n')
             f.write(f'스킬_{i}_증폭 : {스킬.증폭}\n')
             f.write(f'스킬_{i}_최고레벨 : {스킬.최고레벨}\n')
+        for i, 아이템 in enumerate(self.인벤토리.목록, 1):
+            f.write(f'아이템_{i}_id : {아이템.id}\n')
+            f.write(f'아이템_{i}_이름 : {아이템.이름}\n')
+            f.write(f'아이템_{i}_등급 : {아이템.등급}\n')
+            f.write(f'아이템_{i}_등급이름 : {아이템.등급이름}\n')
+            f.write(f'아이템_{i}_강화레벨 : {아이템.강화레벨}\n')
+            f.write(f'아이템_{i}_최소데미지 : {아이템.최소데미지}\n')
+            f.write(f'아이템_{i}_최대데미지 : {아이템.최대데미지}\n')
+            f.write(f'아이템_{i}_증폭 : {아이템.증폭}\n')
+            f.write(f'아이템_{i}_강화최소데미지 : {아이템.강화최소데미지}\n')
+            f.write(f'아이템_{i}_강화최대데미지 : {아이템.강화최대데미지}\n')
+            f.write(f'아이템_{i}_강화증폭 : {아이템.강화증폭}\n')
+            f.write(f'아이템_{i}_최종최소데미지 : {아이템.최종최소데미지}\n')
+            f.write(f'아이템_{i}_최종최대데미지 : {아이템.최종최대데미지}\n')
+            f.write(f'아이템_{i}_최종증폭 : {아이템.최종증폭}\n')
+            for key, value in 아이템.추가능력치.items():
+                f.write(f'아이템_{i}_추가능력치_{key} : {value}\n')
+            for j, 스킬 in enumerate(아이템.무기스킬리스트, 1):
+                f.write(f'아이템_{i}_스킬_{j}_이름 : {스킬.이름}\n')
+                f.write(f'아이템_{i}_스킬_{j}_레벨 : {스킬.레벨}\n')
+                f.write(f'아이템_{i}_스킬_{j}_등급 : {스킬.등급}\n')
+                f.write(f'아이템_{i}_스킬_{j}_데미지 : {스킬.데미지}\n')
+                f.write(f'아이템_{i}_스킬_{j}_타입 : {스킬.타입}\n')
+                f.write(f'아이템_{i}_스킬_{j}_지속시간 : {스킬.지속시간}\n')
+                f.write(f'아이템_{i}_스킬_{j}_증폭 : {스킬.증폭}\n')
+                f.write(f'아이템_{i}_스킬_{j}_최고레벨 : {스킬.최고레벨}\n')
+                
         f.close()
 
     def 불러오기(self, 캐릭터이름):
@@ -210,6 +241,8 @@ class 캐릭터():
         캐릭터정보리스트 = []
         스킬딕셔너리 = {}
         무기스킬딕셔너리 = {}
+        아이템딕셔너리 = {}
+        아이템스킬딕셔너리 = {}
         while True:
             line = f.readline().rstrip()
             if not line:
@@ -241,6 +274,7 @@ class 캐릭터():
                 elif key_list[0] == '속도': self.속도 = int(value)
                 elif key_list[0] == '경험치': self.경험치 = int(value)
                 elif key_list[0] == '필요경험치': self.필요경험치 = int(value)
+                elif key_list[0] == '코인': self.코인 = int(value)
             elif len(key_list) >= 2:
                 if key_list[0] == '무기':
                     if   key_list[1] == '이름': self.무기.이름 = value
@@ -253,7 +287,7 @@ class 캐릭터():
                     elif key_list[1] == '강화최대데미지': self.무기.강화최대데미지 = int(value)
                     elif key_list[1] == '강화증폭': self.무기.강화증폭 = float(value)
                     elif key_list[1] == '최종최소데미지': self.무기.최종최소데미지 = int(value)
-                    elif key_list[1] == '최종최대데미지': self.무기.최종최대데미지 = int(value)
+                    elif key_list[1] == '최종최대데미지': self.무기.최종최대데미지 = int(value) 
                     elif key_list[1] == '최종증폭': self.무기.최종증폭 = float(value)
                     elif key_list[1] == '추가능력치':
                         if   key_list[2] == 'STR': self.무기.추가능력치['STR'] = int(value)
@@ -272,7 +306,26 @@ class 캐릭터():
                         스킬딕셔너리[key_list[1]] = {key_list[2]: value}
                     else:
                         스킬딕셔너리[key_list[1]][key_list[2]] = value
-
+                elif key_list[0] == '아이템':
+                    
+                    if key_list[1] not in 아이템딕셔너리:
+                        if key_list[2] == '스킬':
+                            if key_list[3] not in 아이템스킬딕셔너리:
+                                아이템스킬딕셔너리[key_list[3]] = {key_list[4]: value}
+                            else:
+                                아이템스킬딕셔너리[key_list[3]][key_list[4]] = value
+                            아이템딕셔너리[key_list[1]][key_list[2]] = 아이템스킬딕셔너리
+                        else:
+                            아이템딕셔너리[key_list[1]] = {key_list[2]: value}
+                    else:
+                        if key_list[2] == '스킬':
+                            if key_list[3] not in 아이템스킬딕셔너리:
+                                아이템스킬딕셔너리[key_list[3]] = {key_list[4]: value}
+                            else:
+                                아이템스킬딕셔너리[key_list[3]][key_list[4]] = value
+                            아이템딕셔너리[key_list[1]][key_list[2]] = 아이템스킬딕셔너리
+                        else:
+                            아이템딕셔너리[key_list[1]][key_list[2]] = value
         for key1 in 스킬딕셔너리.keys():
             임시스킬 = 스킬('임시스킬')
             for key2, value in 스킬딕셔너리[key1].items():
@@ -300,8 +353,48 @@ class 캐릭터():
                 elif key2 == '최고레벨': 임시무기스킬.최고레벨 = int(value)
             if 임시무기스킬.이름 != '임시무기스킬':
                 self.무기.무기스킬리스트.append(임시무기스킬)
+        for key1 in 아이템딕셔너리.keys():
+            임시무기 = 무기('임시무기')
+            for key2, value in 아이템딕셔너리[key1].items():
+                if   key2 == 'id': 임시무기.id = int(value)
+                elif key2 == '이름': 임시무기.이름 = value
+                elif key2 == '등급': 임시무기.등급 = int(value)
+                elif key2 == '등급이름': 임시무기.등급이름 = value
+                elif key2 == '강화레벨': 임시무기.강화레벨 = value
+                elif key2 == '최소데미지': 임시무기.최소데미지 = int(value)
+                elif key2 == '최대데미지': 임시무기.최대데미지 = int(value)
+                elif key2 == '증폭': 임시무기.증폭 = float(value)
+                elif key2 == '강화최소데미지': 임시무기.강화최소데미지 = int(value)
+                elif key2 == '강화최대데미지': 임시무기.강화최대데미지 = int(value)
+                elif key2 == '강화증폭': 임시무기.강화증폭 = float(value)
+                elif key2 == '최종최소데미지': 임시무기.최종최소데미지 = int(value)
+                elif key2 == '최종최대데미지': 임시무기.최종최대데미지 = int(value)
+                elif key2 == '최종증폭': 임시무기.최종증폭 = float(value)
+                elif key2 == '추가능력치':
+                    if   key_list[2] == 'STR': 임시무기.추가능력치['STR'] = int(value)
+                    elif key_list[2] == 'DEX': 임시무기.추가능력치['DEX'] = int(value)
+                    elif key_list[2] == 'INT': 임시무기.추가능력치['INT'] = int(value)
+                    elif key_list[2] == 'CON': 임시무기.추가능력치['CON'] = int(value)
+                    elif key_list[2] == 'LUK': 임시무기.추가능력치['LUK'] = int(value)
+                elif key2 == '최고강화레벨': 임시무기.최고강화레벨 = int(value)
+                elif key2 == '스킬':
+                    임시스킬 = 스킬('임시스킬')
+                    for key3, value in 아이템딕셔너리[key1]['스킬'].items():    # 아이템스킬딕셔너리.items()
+                        if   key3 == '이름': 임시스킬.이름 = value
+                        elif key3 == '레벨': 임시스킬.레벨 = value
+                        elif key3 == '등급': 임시스킬.등급 = value
+                        elif key3 == '데미지': 임시스킬.데미지 = value
+                        elif key3 == '타입': 임시스킬.타입 = value
+                        elif key3 == '지속시간': 임시스킬.지속시간 = value
+                        elif key3 == '증폭': 임시스킬.증폭 = value
+                        elif key3 == '최고레벨': 임시스킬.최고레벨 = value
+                    if 임시스킬.이름 != '임시스킬':
+                        임시무기.무기스킬리스트.append(임시스킬)
+
+            if 임시무기.이름 != '임시무기':
+                self.인벤토리.추가(임시무기)
             
         f.close()
-        Town.캐릭터딕셔너리[f'{self.이름}'] = self
+        Town.저장(self)
         return self
         

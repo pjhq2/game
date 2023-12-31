@@ -51,5 +51,5 @@ def test_create_character():
     캐릭터_3.저장()
 
 if __name__ == '__main__':
-    test_create_character()
+    create_character('동황')
     

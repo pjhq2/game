@@ -18,5 +18,5 @@ if __name__ == '__main__':
     불러온캐릭터.불러오기('갓종')
     불러온캐릭터.출력()
     create_monster('주황버섯')
-    for _ in range(10): hunt(불러온캐릭터, Town.캐릭터딕셔너리['주황버섯'])
+    for _ in range(10): hunt(불러온캐릭터, Town.불러오기('주황버섯'))
     불러온캐릭터.출력()

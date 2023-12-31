@@ -2,13 +2,15 @@ from master import trunc, gprint
 
 from skill  import 무기스킬_내려치기
 from skill  import 무기스킬_시동
+from item   import 아이템
 
 import random
 
 from color import bcolors
 
-class 무기():
+class 무기(아이템):
     def __init__(self, 이름='주먹'):
+        super().__init__(이름)
         self.이름           = 이름
         self.등급           = 1
         self.등급이름       = '일반'
@@ -25,6 +27,11 @@ class 무기():
         self.추가능력치     = {}
         self.무기스킬리스트 = []
         self.최고강화레벨   = 100
+
+    def 초기세팅(self):
+        self.최종최소데미지 = self.최소데미지
+        self.최종최대데미지 = self.최대데미지
+        self.최종증폭       = self.증폭
 
     def 강화레벨업(self):
         파라미터 = random.randint(1, 100)
@@ -70,6 +77,7 @@ def 제작_나무몽둥이():
     else:
         나무몽둥이.최소데미지 = 0
         나무몽둥이.최대데미지 = 2
+    나무몽둥이.초기세팅()
     return 나무몽둥이
 
 def 제작_진검():
@@ -84,6 +92,7 @@ def 제작_진검():
     else:
         진검.최소데미지 = 1
         진검.최대데미지 = 5
+    진검.초기세팅()
     return 진검
 
 def 제작_엑스칼리버():
@@ -111,5 +120,6 @@ def 제작_엑스칼리버():
         엑스칼리버.최대데미지 = random.randint(190, 219)
     else:
         엑스칼리버.최대데미지 = random.randint(160, 189)
+    엑스칼리버.초기세팅()
     return 엑스칼리버
     
