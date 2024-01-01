@@ -53,6 +53,8 @@ class 인벤토리():
         소비아이템길이 = calc_str_length(f'[{인덱스}] {self.목록[인덱스].이름}')
         if self.목록[인덱스].유형 == '무기':
             print(f'(+{self.목록[인덱스].강화레벨})')
+        elif self.목록[인덱스].유형 == '갑옷':
+            print(f'(+{self.목록[인덱스].강화레벨})')
         elif type(self.목록[인덱스]) == 소비:
             print(' '*(인벤토리길이-소비아이템길이-1-len(str(self.목록[인덱스].개수))), end='')
             print(f'{self.목록[인덱스].개수}')

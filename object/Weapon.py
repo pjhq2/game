@@ -13,11 +13,7 @@ from .Item   import 장비아이템
 class 무기(장비아이템):
     def __init__(self, 이름='주먹'):
         super().__init__(이름)
-        self.이름           = 이름
         self.유형           = '무기'
-        self.등급           = 1
-        self.등급이름       = '일반'
-        self.강화레벨       = 0
         self.최소데미지     = 0
         self.최대데미지     = 0
         self.증폭           = 1.0
@@ -29,7 +25,6 @@ class 무기(장비아이템):
         self.최종증폭       = 0
         self.추가능력치     = {}
         self.무기스킬리스트 = []
-        self.최고강화레벨   = 100
 
     def 초기세팅(self):
         self.최종최소데미지 = self.최소데미지
@@ -55,7 +50,6 @@ class 무기(장비아이템):
         print(f'------------------------------')
         gprint(f'{self.이름}', self.등급, end='')
         print(f'(+{self.강화레벨})')
-        length = calc_str_length(f'{self.이름}(+{self.강화레벨})')
         print(' '*(29-calc_str_length(self.유형)) + self.유형)
         print(f' 등급       : {self.등급이름}')
         for key, value in self.추가능력치.items():
@@ -176,7 +170,7 @@ def 제작_그리폰():
     최소데미지등급 = random.randint(1, 100)
     최대데미지등급 = random.randint(1, 100)
     if 최소데미지등급 <= 1:
-        그리폰.최소데미지 = 999
+        그리폰.최소데미지 = 259
     elif 최소데미지등급 <= 10:
         그리폰.최소데미지 = random.randint(220, 250)
     elif 최소데미지등급 <= 50:
@@ -184,7 +178,7 @@ def 제작_그리폰():
     else:
         그리폰.최소데미지 = random.randint(180, 199)
     if 최대데미지등급 <= 1:
-        그리폰.최대데미지 = 999
+        그리폰.최대데미지 = 369
     elif 최대데미지등급 <= 10:
         그리폰.최대데미지 = random.randint(320, 350)
     elif 최대데미지등급 <= 50:
@@ -193,3 +187,29 @@ def 제작_그리폰():
         그리폰.최대데미지 = random.randint(260, 289)
     그리폰.초기세팅()
     return 그리폰
+
+def 제작_에이스():
+    에이스 = 무기('에이스')
+    에이스.등급 = 6
+    에이스.등급이름 = '신화'
+    에이스.추가능력치['STR'] = 77
+    에이스.추가능력치['DEX'] = 77
+    에이스.추가능력치['INT'] = 77
+    에이스.추가능력치['CON'] = 77
+    에이스.추가능력치['LUK'] = 77
+    에이스.무기스킬리스트.append(무기스킬_카무사리())
+    데미지등급 = random.randint(1, 100)
+    if 데미지등급 <= 5:
+        에이스.최소데미지 = 0
+        에이스.최대데미지 = 777
+    elif 데미지등급 <= 40:
+        에이스.최소데미지 = random.randint(100, 150)
+        에이스.최대데미지 = random.randint(460, 500)
+    elif 데미지등급 <= 80:
+        에이스.최소데미지 = random.randint(80, 99)
+        에이스.최대데미지 = random.randint(430, 459)
+    else:
+        에이스.최소데미지 = random.randint(60, 79)
+        에이스.최대데미지 = random.randint(400, 429)
+    에이스.초기세팅()
+    return 에이스
