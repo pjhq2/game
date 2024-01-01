@@ -2,6 +2,7 @@ import random
 
 from master  import trunc
 from master  import gprint
+from master  import calc_str_length
 
 from .Skill  import 무기스킬_내려치기
 from .Skill  import 무기스킬_월아천충
@@ -13,6 +14,7 @@ class 무기(장비아이템):
     def __init__(self, 이름='주먹'):
         super().__init__(이름)
         self.이름           = 이름
+        self.유형           = '무기'
         self.등급           = 1
         self.등급이름       = '일반'
         self.강화레벨       = 0
@@ -53,17 +55,19 @@ class 무기(장비아이템):
         print(f'------------------------------')
         gprint(f'{self.이름}', self.등급, end='')
         print(f'(+{self.강화레벨})')
-        print(f'등급       : {self.등급이름}')
+        length = calc_str_length(f'{self.이름}(+{self.강화레벨})')
+        print(' '*(29-calc_str_length(self.유형)) + self.유형)
+        print(f' 등급       : {self.등급이름}')
         for key, value in self.추가능력치.items():
-            print(f'{key}        : +{value}')
-        print(f'최소데미지 : {self.최소데미지}(+{self.강화최소데미지})')
-        print(f'최대데미지 : {self.최대데미지}(+{self.강화최대데미지})')
-        print(f'증폭       : {trunc(self.증폭, 2)}(+{trunc(self.강화증폭, 2)})')
-        print(f'무기데미지 : {int(self.최종증폭*self.최종최소데미지)} - {int(self.최종증폭*self.최종최대데미지)}')
+            print(f' {key}        : +{value}')
+        print(f' 최소데미지 : {self.최소데미지}(+{self.강화최소데미지})')
+        print(f' 최대데미지 : {self.최대데미지}(+{self.강화최대데미지})')
+        print(f' 증폭       : {trunc(self.증폭, 2)}(+{trunc(self.강화증폭, 2)})')
+        print(f' 무기데미지 : {int(self.최종증폭*self.최종최소데미지)} - {int(self.최종증폭*self.최종최대데미지)}')
         if len(self.무기스킬리스트) >= 1:
-            print(f'무기스킬   : {self.무기스킬리스트[0].이름} Lv.{self.무기스킬리스트[0].레벨}')
+            print(f' 무기스킬   : {self.무기스킬리스트[0].이름} Lv.{self.무기스킬리스트[0].레벨}')
             for 무기스킬 in self.무기스킬리스트[1:]:
-                print(f'             {무기스킬.이름} Lv.{무기스킬.레벨}')
+                print(f'              {무기스킬.이름} Lv.{무기스킬.레벨}')
         print(f'------------------------------')
 
 def 제작_나무몽둥이():

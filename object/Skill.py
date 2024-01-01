@@ -6,7 +6,7 @@ class 스킬():
         self.레벨     = 1
         self.등급     = 1
         self.데미지   = 0
-        self.타입     = '액티브'
+        self.유형     = '액티브'
         self.지속시간 = 1
         self.증폭     = 1.0
         self.최고레벨 = 5 + self.등급*5

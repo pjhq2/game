@@ -48,8 +48,8 @@ class DualInfo():
         
         print('='*(출력최대길이) + ' '*6 + '='*(출력최대길이))
         for _ in range(1):
-            선공출력내용 = fill_str_with_space(f'{선공캐릭터정보["이름"]}(Lv.{선공캐릭터정보["레벨"]})', 출력최대길이, ' ')
-            후공출력내용 = fill_str_with_space(f'{후공캐릭터정보["이름"]}(Lv.{후공캐릭터정보["레벨"]})', 출력최대길이, ' ')
+            선공출력내용 = fill_str_with_space(f' {선공캐릭터정보["이름"]} Lv.{선공캐릭터정보["레벨"]}', 출력최대길이, ' ')
+            후공출력내용 = fill_str_with_space(f' {후공캐릭터정보["이름"]} Lv.{후공캐릭터정보["레벨"]}', 출력최대길이, ' ')
             print(선공출력내용, end='')
             print('  vs  ', end='')
             print(후공출력내용)
@@ -83,18 +83,18 @@ def 듀얼공방(선공캐릭터, 후공캐릭터, 선공캐릭터_HP, 후공캐
     else:                             후공캐릭터_HP -= 최종피해
     print('-'*출력최대길이 + ' '*6 + '-'*출력최대길이)
     #-------------------- Line 1 --------------------
-    선공출력내용 = fill_str_with_space(f'{bcolors.BOLD}{선공캐릭터.이름}{bcolors.ENDC} Lv.{선공캐릭터.레벨}', 출력최대길이-7+8, ' ')
+    선공출력내용 = fill_str_with_space(f' {bcolors.BOLD}{선공캐릭터.이름}{bcolors.ENDC} Lv.{선공캐릭터.레벨}', 출력최대길이-7+8, ' ')
     print(선공출력내용, end='OFFENSE  =>  ')
-    후공출력내용 = fill_str_with_space(f'{bcolors.BOLD}{후공캐릭터.이름}{bcolors.ENDC} Lv.{후공캐릭터.레벨}', 출력최대길이-7+8, ' ')
+    후공출력내용 = fill_str_with_space(f' {bcolors.BOLD}{후공캐릭터.이름}{bcolors.ENDC} Lv.{후공캐릭터.레벨}', 출력최대길이-7+8, ' ')
     print(후공출력내용, end='DEFENSE\n')
     #-------------------- Line 2 --------------------
-    선공캐릭터HP상태  = f'HP : {선공캐릭터_HP} / {선공캐릭터.HP}'
+    선공캐릭터HP상태  = f' HP : {선공캐릭터_HP} / {선공캐릭터.HP}'
     선공캐릭터HP상태_ = f'{bcolors.OKGREEN}{선공캐릭터HP상태}{bcolors.ENDC}'
     print(선공캐릭터HP상태_, end='')
     print(' '*(출력최대길이-len(선공캐릭터HP상태)-len(f'{str(선공캐릭터최종데미지)}')), end='')
     print(f'{선공캐릭터최종데미지_}', end='')
     print(' '*6, end='')
-    후공캐릭터HP상태  = f'HP : {후공캐릭터_HP} / {후공캐릭터.HP}'
+    후공캐릭터HP상태  = f' HP : {후공캐릭터_HP} / {후공캐릭터.HP}'
     후공캐릭터HP상태_ = f'{bcolors.OKGREEN}{후공캐릭터HP상태}{bcolors.ENDC}'
     print(후공캐릭터HP상태_, end='')
     print(' '*(출력최대길이-len(후공캐릭터HP상태)-len(f'{str(막은피해)}')), end='')
@@ -135,18 +135,18 @@ def 듀얼공방(선공캐릭터, 후공캐릭터, 선공캐릭터_HP, 후공캐
     else:                             선공캐릭터_HP -= 최종피해
     print('-'*출력최대길이 + ' '*6 + '-'*출력최대길이)
     #-------------------- Line 1 --------------------
-    선공출력내용 = fill_str_with_space(f'{bcolors.BOLD}{선공캐릭터.이름}{bcolors.ENDC} Lv.{선공캐릭터.레벨}', 출력최대길이-7+8, ' ')
+    선공출력내용 = fill_str_with_space(f' {bcolors.BOLD}{선공캐릭터.이름}{bcolors.ENDC} Lv.{선공캐릭터.레벨}', 출력최대길이-7+8, ' ')
     print(선공출력내용, end='DEFENSE  <=  ')
-    후공출력내용 = fill_str_with_space(f'{bcolors.BOLD}{후공캐릭터.이름}{bcolors.ENDC} Lv.{후공캐릭터.레벨}', 출력최대길이-7+8, ' ')
+    후공출력내용 = fill_str_with_space(f' {bcolors.BOLD}{후공캐릭터.이름}{bcolors.ENDC} Lv.{후공캐릭터.레벨}', 출력최대길이-7+8, ' ')
     print(후공출력내용, end='OFFENSE\n')
     #-------------------- Line 2 --------------------
-    선공캐릭터HP상태  = f'HP : {선공캐릭터_HP} / {선공캐릭터.HP}'
+    선공캐릭터HP상태  = f' HP : {선공캐릭터_HP} / {선공캐릭터.HP}'
     선공캐릭터HP상태_ = f'{bcolors.OKGREEN}{선공캐릭터HP상태}{bcolors.ENDC}'
     print(선공캐릭터HP상태_, end='')
     print(' '*(출력최대길이-len(선공캐릭터HP상태)-len(f'{str(막은피해)}')), end='')
     print(f'{막은피해_}', end='')
     print(' '*6, end='')
-    후공캐릭터HP상태  = f'HP : {후공캐릭터_HP} / {후공캐릭터.HP}'
+    후공캐릭터HP상태  = f' HP : {후공캐릭터_HP} / {후공캐릭터.HP}'
     후공캐릭터HP상태_ = f'{bcolors.OKGREEN}{후공캐릭터HP상태}{bcolors.ENDC}'
     print(후공캐릭터HP상태_, end='')
     print(' '*(출력최대길이-len(후공캐릭터HP상태)-len(f'{str(후공캐릭터최종데미지)}')), end='')
