@@ -1,4 +1,4 @@
-from weapon import *
+from object.Weapon import *
 
 def create_weapon(무기이름):
     if   무기이름 == '나무몽둥이': return 제작_나무몽둥이()
@@ -7,4 +7,5 @@ def create_weapon(무기이름):
     elif 무기이름 == '참월':       return 제작_참월()
     elif 무기이름 == '엑스칼리버': return 제작_엑스칼리버()
     elif 무기이름 == '그리폰':     return 제작_그리폰()
-    else:                          raise(NameError)
+    
+    raise(NameError)

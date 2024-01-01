@@ -1,16 +1,15 @@
-from master import trunc, gprint
-
-from skill  import 무기스킬_내려치기
-from skill  import 무기스킬_월아천충
-from skill  import 무기스킬_시동
-from skill  import 무기스킬_카무사리
-from item   import 아이템
-
 import random
 
-from color import bcolors
+from master  import trunc
+from master  import gprint
 
-class 무기(아이템):
+from .Skill  import 무기스킬_내려치기
+from .Skill  import 무기스킬_월아천충
+from .Skill  import 무기스킬_시동
+from .Skill  import 무기스킬_카무사리
+from .Item   import 장비아이템
+
+class 무기(장비아이템):
     def __init__(self, 이름='주먹'):
         super().__init__(이름)
         self.이름           = 이름

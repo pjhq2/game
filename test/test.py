@@ -1,17 +1,17 @@
-from town import Town
-
-from dual             import dual
-from hunt             import hunt
-from create_character import test_create_character, create_character
-from create_monster   import create_monster
-from create_weapon    import create_weapon
-from create_skill     import create_skill
-from character        import 캐릭터
-from reinforce        import 무기강화
-from reinforce        import 스킬강화
-from initial          import initial_loading
-
 import os
+
+from object.Town               import 마을
+from object.Character          import 캐릭터
+from object.Reinforce          import 무기강화
+from object.Reinforce          import 스킬강화
+
+from function.dual             import dual
+from function.hunt             import hunt
+from function.create_character import test_create_character, create_character
+from function.create_monster   import create_monster
+from function.create_weapon    import create_weapon
+from function.create_skill     import create_skill
+from function.initial          import initial_loading
 
 def get_all_character():
     캐릭터파일리스트 = os.listdir('./save')
@@ -23,10 +23,10 @@ def get_all_character():
         캐릭터리스트.append(캐릭터().불러오기(캐릭터이름))
     return 캐릭터리스트
 
-if __name__ == '__main__':
+def test():
     initial_loading()
 
-    만패 = Town.불러오기('만패')
+    만패 = 마을.불러오기('만패')
     만패.출력()
     만패.인벤토리.모두출력()
 
@@ -36,7 +36,7 @@ if __name__ == '__main__':
     #만패.인벤토리.추가(진검)
     #만패.인벤토리.모두출력()
 
-    #만패.장착_무기(0)
+    #만패.장비장착(0)
     #만패.인벤토리.모두출력()
     #만패.출력()
 
@@ -48,6 +48,6 @@ if __name__ == '__main__':
     #for _ in range(100): hunt(만패, 주황버섯)
     #만패.저장()
 
-    팡이 = Town.불러오기('팡이')
+    팡이 = 마을.불러오기('팡이')
     팡이.회피 = 10.0
     dual(만패, 팡이)

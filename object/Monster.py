@@ -1,9 +1,9 @@
-from master import trunc
-from color  import bcolors
+from master     import trunc
+from color      import bcolors
 
-from character import 캐릭터
-from skill     import 스킬
-from weapon    import 무기
+from .Character import 캐릭터
+from .Skill     import 스킬
+from .Weapon    import 무기
 
 class 몬스터(캐릭터):
     def __init__(self, 이름):
@@ -15,6 +15,7 @@ class 몬스터(캐릭터):
         self.스킬리스트 = []
         self.스킬리스트.append(스킬('박치기'))  # 강타
         self.경험치 = 2500
+        self.코인 = 200
 
     def 출력(self):
         print('==============================')

@@ -1,12 +1,13 @@
-from master import fill_str_with_space
-
-from town             import Town
-from character        import 캐릭터
-from weapon           import 제작_진검, 제작_엑스칼리버
-from color            import bcolors
-from create_character import create_character
-
 import random
+
+from master            import fill_str_with_space
+from color             import bcolors
+
+from object.Town       import 마을
+from object.Character  import 캐릭터
+from object.Weapon     import 제작_진검, 제작_엑스칼리버
+
+from .create_character import create_character
 
 class DualInfo():
     def __init__(self, 캐릭터_1, 캐릭터_2):
@@ -208,8 +209,8 @@ def dual(캐릭터_1, 캐릭터_2):
             
 if __name__ == '__main__':
     #create_character()
-    #캐릭터_1 = Town.불러오기('성레기')
-    #캐릭터_2 = Town.불러오기('갓종')
+    #캐릭터_1 = 마을.불러오기('성레기')
+    #캐릭터_2 = 마을.불러오기('갓종')
     #캐릭터_1.무기.출력()
     #캐릭터_2.무기.출력()
 #

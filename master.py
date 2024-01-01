@@ -1,6 +1,6 @@
-from color import bcolors
-
 import unicodedata
+
+from color import bcolors
 
 def fill_str_with_space(input_s="", max_size=60, fill_char=" "):
     """
@@ -35,7 +35,7 @@ def trunc(number, ndigits):
         raise(TypeError)
 
 def gprint(string, grade, end='\n'):
-    if   grade <= 1: print(string)
+    if   grade <= 1: print(string, end=end)
     elif grade == 2: print(f'{bcolors.OKGREEN}{string}{bcolors.ENDC}', end=end)
     elif grade == 3: print(f'{bcolors.OKBLUE}{string}{bcolors.ENDC}', end=end)
     elif grade == 4: print(f'{bcolors.FAIL}{string}{bcolors.ENDC}', end=end)

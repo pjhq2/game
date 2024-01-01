@@ -1,8 +1,7 @@
-from town import Town
-
-from character import 캐릭터
-
 import os
+
+from object.Town      import 마을
+from object.Character import 캐릭터
 
 def get_all_character():
     캐릭터파일리스트 = os.listdir('./save')
@@ -16,10 +15,10 @@ def get_all_character():
 
 def initial_loading():
     모든캐릭터 = get_all_character()
-    Town.모두저장(모든캐릭터)
+    마을.모두저장(모든캐릭터)
 
 if __name__ == '__main__':
     initial_loading()
-    for 캐릭터이름 in Town.캐릭터딕셔너리.keys():
+    for 캐릭터이름 in 마을.캐릭터딕셔너리.keys():
         print(캐릭터이름)
  

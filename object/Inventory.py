@@ -1,9 +1,9 @@
-from master import *
+from master import gprint
+from master import calc_str_length
 
 class 인벤토리():
     def __init__(self, 소유캐릭터이름):
         self.소유캐릭터이름 = 소유캐릭터이름
-        #self.목록 = []
         self.목록 = [None for _ in range(40)]
 
     def 추가(self, 아이템):
@@ -12,13 +12,15 @@ class 인벤토리():
         self.모두출력()
 
     def 제거(self, 인덱스):
-        if self.목록[인덱스] == None: return
+        if self.목록[인덱스] == None:
+            return
         self.목록[인덱스] = None
         self.모두출력()
     
     def 빈공간인덱스(self):
         for 인덱스 in range(len(self.목록)):
-            if self.목록[인덱스] == None: return 인덱스
+            if self.목록[인덱스] == None:
+                return 인덱스
         else:
             print('인벤토리가 가득 찼습니다.')
 
@@ -29,7 +31,8 @@ class 인벤토리():
         return 개수
     
     def 출력(self, 인덱스):
-        if self.목록[인덱스] == None: return
+        if self.목록[인덱스] == None:
+            return
         print(f'[{인덱스}] ', end='')
         gprint(f'{self.목록[인덱스].이름}', self.목록[인덱스].등급, end='')
         print(f'(+{self.목록[인덱스].강화레벨})')

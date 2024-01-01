@@ -1,12 +1,13 @@
-from master    import trunc
-from town      import Town
-from weapon    import 무기
-from skill     import 스킬
-from inventory import 인벤토리
+import os
+import random
 
-from color  import bcolors
+from master     import trunc
+from color      import bcolors
 
-import random, os
+from .Town      import 마을
+from .Weapon    import 무기
+from .Skill     import 스킬
+from .Inventory import 인벤토리
 
 class 캐릭터():
     def __init__(self, 이름='임시캐릭터'):
@@ -98,22 +99,23 @@ class 캐릭터():
         self.치명타증폭 = 1.25 + self.LUK * 0.01
         self.저장()
 
-    def 장착_무기(self, 인덱스):
-        for key, value in self.무기.추가능력치.items():
-            if   key=='STR': self.STR -= value
-            elif key=='DEX': self.DEX -= value
-            elif key=='INT': self.INT -= value
-            elif key=='CON': self.CON -= value
-            elif key=='LUK': self.LUK -= value
-        for key, value in self.인벤토리.목록[인덱스].추가능력치.items():
-            if   key=='STR': self.STR += value
-            elif key=='DEX': self.DEX += value
-            elif key=='INT': self.INT += value
-            elif key=='CON': self.CON += value
-            elif key=='LUK': self.LUK += value
-        if self.무기.이름 != '주먹': self.인벤토리.추가(self.무기)
-        self.무기 = self.인벤토리.목록[인덱스]
-        self.인벤토리.목록[인덱스] = None
+    def 장착_장비(self, 인덱스):
+        if type(self.인벤토리.목록[인덱스]) == 무기:
+            for key, value in self.무기.추가능력치.items():
+                if   key=='STR': self.STR -= value
+                elif key=='DEX': self.DEX -= value
+                elif key=='INT': self.INT -= value
+                elif key=='CON': self.CON -= value
+                elif key=='LUK': self.LUK -= value
+            for key, value in self.인벤토리.목록[인덱스].추가능력치.items():
+                if   key=='STR': self.STR += value
+                elif key=='DEX': self.DEX += value
+                elif key=='INT': self.INT += value
+                elif key=='CON': self.CON += value
+                elif key=='LUK': self.LUK += value
+            if self.무기.이름 != '주먹': self.인벤토리.추가(self.무기)
+            self.무기 = self.인벤토리.목록[인덱스]
+            self.인벤토리.목록[인덱스] = None
 
     def 해제_무기(self):
         if self.무기.이름 == '주먹': return
@@ -148,10 +150,11 @@ class 캐릭터():
         for 스킬 in self.스킬리스트[1:]:
             print(f'             {스킬.이름} Lv.{스킬.레벨}')
         print(f'경험치     : {self.경험치} / {self.필요경험치}')
+        print(f'코인       : {self.코인}')
         print('==============================')
 
     def 저장(self):
-        Town.저장(self)
+        마을.저장(self)
         if not os.path.isdir('./save'):
             os.mkdir('./save')
         f = open(f'./save/{self.이름}.info', 'w')
@@ -363,10 +366,11 @@ class 캐릭터():
             if 임시무기스킬.이름 != '임시무기스킬':
                 self.무기.무기스킬리스트.append(임시무기스킬)
 
+        # 아이템 종류에 따라 나눠야 함(무기/방어구(모자/갑옷/...)/소비/기타) 또는 일단 하나에 다 때려넣는 방식?
         for key1 in 아이템딕셔너리.keys():
             임시무기 = 무기('임시무기')
             for key2, value in 아이템딕셔너리[key1].items():
-                if   key2 == 'id': 임시무기.id = int(value)
+                if   key2 == 'id': 임시무기.id = value
                 elif key2 == '이름': 임시무기.이름 = value
                 elif key2 == '등급': 임시무기.등급 = int(value)
                 elif key2 == '등급이름': 임시무기.등급이름 = value
@@ -406,6 +410,6 @@ class 캐릭터():
                 self.인벤토리.추가(임시무기)
             
         f.close()
-        Town.저장(self)
+        마을.저장(self)
         return self
         
