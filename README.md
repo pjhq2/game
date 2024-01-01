@@ -2,5 +2,5 @@
 
 - basic sequence
 
-  `$ py sequence.py`
+  `$ py main.py`
 
