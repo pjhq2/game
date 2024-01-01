@@ -1,4 +1,4 @@
-from object.Weapon import *
+from object.Weapon      import *
 
 def create_weapon(무기이름):
     if   무기이름 == '나무몽둥이': return 제작_나무몽둥이()

@@ -1,13 +1,14 @@
 import os
 import random
 
-from master     import trunc
-from color      import bcolors
+from master       import trunc
+from color        import bcolors
 
-from .Town      import 마을
-from .Weapon    import 무기
-from .Skill     import 스킬
-from .Inventory import 인벤토리
+from .Town        import 마을
+from .Weapon      import 무기
+from .Skill       import 스킬
+from .Inventory   import 인벤토리
+from .Consumption import 소비
 
 class 캐릭터():
     def __init__(self, 이름='임시캐릭터'):
@@ -249,6 +250,14 @@ class 캐릭터():
                     f.write(f'아이템_{i}_{아이템.유형}_스킬_{j}_지속시간 : {스킬.지속시간}\n')
                     f.write(f'아이템_{i}_{아이템.유형}_스킬_{j}_증폭 : {스킬.증폭}\n')
                     f.write(f'아이템_{i}_{아이템.유형}_스킬_{j}_최고레벨 : {스킬.최고레벨}\n')
+            elif type(아이템) == 소비:
+                f.write(f'아이템_{i}_{아이템.유형}_id : {아이템.id}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_이름 : {아이템.이름}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_등급 : {아이템.등급}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_등급이름 : {아이템.등급이름}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_인벤토리인덱스 : {i}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_유형 : {아이템.유형}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_개수 : {아이템.개수}\n')
                 
         f.close()
 
@@ -387,18 +396,18 @@ class 캐릭터():
                 self.무기.무기스킬리스트.append(임시무기스킬)
 
         # 아이템 종류에 따라 나눠야 함(무기/방어구(모자/갑옷/...)/소비/기타)
+        print(아이템딕셔너리)
         for key1 in 아이템딕셔너리.keys():
             인벤토리인덱스 = -1
             if 아이템딕셔너리[key1]['유형'] == '무기':
                 임시무기 = 무기('임시무기')
-                print(아이템딕셔너리[key1])
                 for key2, value in 아이템딕셔너리[key1].items():
                     if   key2 == 'id': 임시무기.id = value
                     elif key2 == '이름': 임시무기.이름 = value
                     elif key2 == '등급': 임시무기.등급 = int(value)
                     elif key2 == '등급이름': 임시무기.등급이름 = value
-                    elif key2 == '유형': 임시무기.유형 = value
                     elif key2 == '인벤토리인덱스': 인벤토리인덱스 = int(value)
+                    elif key2 == '유형': 임시무기.유형 = value
                     elif key2 == '강화레벨': 임시무기.강화레벨 = int(value)
                     elif key2 == '최소데미지': 임시무기.최소데미지 = int(value)
                     elif key2 == '최대데미지': 임시무기.최대데미지 = int(value)
@@ -434,8 +443,42 @@ class 캐릭터():
 
                 if 임시무기.이름 != '임시무기' and 인벤토리인덱스 != -1:
                     self.인벤토리.추가_인덱스(임시무기, 인벤토리인덱스)
+
+            elif 아이템딕셔너리[key1]['유형'] == '주문서':
+                print(아이템딕셔너리[key1])
+                임시소비 = 소비('임시소비', '주문서')
+                for key2, value in 아이템딕셔너리[key1].items():
+                    if   key2 == 'id': 임시소비.id = value
+                    elif key2 == '이름': 임시소비.이름 = value
+                    elif key2 == '등급': 임시소비.등급 = int(value)
+                    elif key2 == '등급이름': 임시소비.등급이름 = value
+                    elif key2 == '인벤토리인덱스': 인벤토리인덱스 = int(value)
+                    elif key2 == '유형': 임시소비.유형 = value
+                    elif key2 == '개수': 임시소비.개수 = int(value)
+
+                if 임시소비.이름 != '임시소비' and 인벤토리인덱스 != -1:
+                    self.인벤토리.추가_인덱스(임시소비, 인벤토리인덱스)
             
         f.close()
         마을.저장(self)
         return self
         
+    def 아이템구매(self, 아이템):
+        인벤토리인덱스, 인벤토리아이템 = self.인벤토리.이름으로찾기(아이템.이름)
+        if not 인벤토리아이템:
+            인벤토리인덱스 = self.인벤토리.추가(아이템)
+            self.인벤토리.목록[인벤토리인덱스].개수 += 1
+        else:
+            인벤토리아이템.개수 += 1
+        self.저장()
+        return 인벤토리인덱스
+
+    def 아이템판매(self, 인벤토리인덱스, 개수=1):
+        인벤토리아이템 = self.인벤토리.목록[인벤토리인덱스]
+        if 인벤토리아이템.유형 == '무기':
+            인벤토리.제거(인벤토리인덱스)
+        elif type(인벤토리아이템) == 소비:
+            if 인벤토리아이템.개수 > 개수:
+                인벤토리아이템.개수 -= 개수
+            else:
+                인벤토리.제거(인벤토리인덱스)
