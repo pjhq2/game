@@ -65,11 +65,11 @@ class 갑옷(장비아이템):
                 self.강화내성 += (self.등급+4)*0.001
         else:
             self.강화명중 += self.등급*3 + 3
-        self.최종방어력 = self.방어력 + self.최종방어력
-        self.최종HP     = self.HP     + self.최종HP
-        self.최종내성   = self.내성   + self.최종내성
-        self.최종명중   = self.명중   + self.최종명중
-        self.최종회피   = self.회피   + self.최종회피
+        self.최종방어력 = self.방어력 + self.강화방어력
+        self.최종HP     = self.HP     + self.강화HP
+        self.최종내성   = self.내성   + self.강화내성
+        self.최종명중   = self.명중   + self.강화명중
+        self.최종회피   = self.회피   + self.강화회피
     
     def 출력(self):
         print(f'------------------------------')

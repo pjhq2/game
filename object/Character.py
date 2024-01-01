@@ -14,42 +14,144 @@ from .Consumption import 소비
 class 캐릭터():
     def __init__(self, 이름='임시캐릭터'):
         # 스텟
-        self.STR        = 5
-        self.DEX        = 5
-        self.INT        = 5
-        self.CON        = 5
-        self.LUK        = 5
+        self.STR            = 5
+        self.DEX            = 5
+        self.INT            = 5
+        self.CON            = 5
+        self.LUK            = 5
+        self.추가STR        = 0
+        self.추가DEX        = 0
+        self.추가INT        = 0
+        self.추가CON        = 0
+        self.추가LUK        = 0
+        self.최종STR        = self.STR + self.추가STR
+        self.최종DEX        = self.DEX + self.추가DEX
+        self.최종INT        = self.INT + self.추가INT
+        self.최종CON        = self.CON + self.추가CON
+        self.최종LUK        = self.LUK + self.추가LUK
         # 정보
-        self.이름       = 이름
-        self.레벨       = 1
-        self.직업       = '초보자'
-        self.공격력     = 100
-        self.HP         = 2000
-        self.MP         = 100
-        self.명중       = 10
-        self.회피       = 0.1
-        self.치명타     = 0.2
-        self.치명타증폭 = 1.25
-        self.방어력     = 50
-        self.내성       = 0.0
-        self.회복       = 5
-        self.속도       = 1000
-        self.경험치     = 0
-        self.필요경험치 = 2000
-        self.코인       = 0
-        self.인벤토리   = 인벤토리(self.이름)
+        self.이름           = 이름
+        self.레벨           = 1
+        self.직업           = '초보자'
+        self.공격력         = 100
+        self.HP             = 2000
+        self.MP             = 100
+        self.명중           = 10
+        self.회피           = 0.1
+        self.치명타         = 0.2
+        self.치명타증폭     = 1.25
+        self.방어력         = 50
+        self.내성           = 0.0
+        self.회복           = 5
+        self.속도           = 1000
+        self.추가공격력     = 0
+        self.추가HP         = 0
+        self.추가MP         = 0
+        self.추가명중       = 0
+        self.추가회피       = 0.0
+        self.추가치명타     = 0.0
+        self.추가치명타증폭 = 0.0
+        self.추가방어력     = 0
+        self.추가내성       = 0.0
+        self.추가회복       = 0
+        self.추가속도       = 0
+        self.최종공격력     = 100
+        self.최종HP         = 2000
+        self.최종MP         = 100
+        self.최종명중       = 10
+        self.최종회피       = 0.1
+        self.최종치명타     = 0.2
+        self.최종치명타증폭 = 1.25
+        self.최종방어력     = 50
+        self.최종내성       = 0.0
+        self.최종회복       = 5
+        self.최종속도       = 1000
+        self.경험치         = 0
+        self.필요경험치     = 2000
+        self.코인           = 0
+        self.인벤토리       = 인벤토리(self.이름)
         # 장비
-        self.무기       = 무기()
-        self.모자       = None
-        self.갑옷       = None
-        self.장갑       = None
-        self.신발       = None
-        self.코어       = None
+        self.무기           = 무기()
+        self.모자           = None
+        self.갑옷           = None
+        self.장갑           = None
+        self.신발           = None
+        self.코어           = None
         # 스킬
-        self.스킬리스트 = []
+        self.스킬리스트     = []
 
     def 처음생성(self):
         self.스킬리스트.append(스킬())  # 강타
+
+    def 능력치세팅(self):
+        # 기본능력치
+        self.공격력     = 100  + self.STR * 1
+        self.치명타     = 0.2  + self.DEX * 0.002
+        self.명중       = 10   + self.DEX * 2
+        self.회복       = 5    + self.INT * 3
+        self.방어력     = 50   + self.CON * 2
+        self.HP         = 2000 + self.CON * 15
+        self.회피       = 0.1  + self.LUK * 0.001
+        self.치명타증폭 = 1.25 + self.LUK * 0.01
+        # 추가능력치
+        self.추가STR        = 0
+        self.추가DEX        = 0
+        self.추가INT        = 0
+        self.추가CON        = 0
+        self.추가LUK        = 0
+        self.추가공격력     = 0
+        self.추가HP         = 0
+        self.추가MP         = 0
+        self.추가명중       = 0
+        self.추가회피       = 0.0
+        self.추가치명타     = 0.0
+        self.추가치명타증폭 = 0.0
+        self.추가방어력     = 0
+        self.추가내성       = 0.0
+        self.추가회복       = 0
+        self.추가속도       = 0
+        if self.무기:
+            for key, value in self.무기.추가능력치.items():
+                if   key == 'STR': self.추가STR += value
+                elif key == 'DEX': self.추가DEX += value
+                elif key == 'INT': self.추가INT += value
+                elif key == 'CON': self.추가CON += value
+                elif key == 'LUK': self.추가LUK += value
+        if self.갑옷:
+            self.갑옷.출력()
+            self.추가방어력 += self.갑옷.최종방어력
+            self.추가HP     += self.갑옷.최종HP
+            self.추가내성   += self.갑옷.최종내성
+            self.추가명중   += self.갑옷.최종명중
+            self.추가회피   += self.갑옷.최종회피
+            for key, value in self.갑옷.추가능력치.items():
+                if   key == 'STR': self.추가STR += value
+                elif key == 'DEX': self.추가DEX += value
+                elif key == 'INT': self.추가INT += value
+                elif key == 'CON': self.추가CON += value
+                elif key == 'LUK': self.추가LUK += value
+        self.추가공격력     += self.추가STR * 1
+        self.추가치명타     += self.추가DEX * 0.002
+        self.추가명중       += self.추가DEX * 2
+        self.추가회복       += self.추가INT * 3
+        self.추가방어력     += self.추가CON * 2
+        self.추가HP         += self.추가CON * 15
+        self.추가회피       += self.추가LUK * 0.001
+        self.추가치명타증폭 += self.추가LUK * 0.01
+        # 최종능력치
+        self.최종STR        = self.STR        + self.추가STR
+        self.최종DEX        = self.DEX        + self.추가DEX
+        self.최종INT        = self.INT        + self.추가INT
+        self.최종CON        = self.CON        + self.추가CON
+        self.최종LUK        = self.LUK        + self.추가LUK
+        self.최종공격력     = self.공격력     + self.추가공격력
+        self.최종치명타     = self.치명타     + self.추가치명타
+        self.최종명중       = self.명중       + self.추가명중
+        self.최종회복       = self.회복       + self.추가회복
+        self.최종방어력     = self.방어력     + self.추가방어력
+        self.최종HP         = self.HP         + self.추가HP
+        self.최종회피       = self.회피       + self.추가회피
+        self.최종치명타증폭 = self.치명타증폭 + self.추가치명타증폭
 
     def 최종데미지(self):
         치명타적중 = False
@@ -96,74 +198,84 @@ class 캐릭터():
                 elif i==2: self.INT += random.randint(0, 1)
                 elif i==3: self.CON += random.randint(0, 1)
                 elif i==4: self.LUK += random.randint(2, 3)
-        self.공격력     = 100  + self.STR * 1
-        self.치명타     = 0.2  + self.DEX * 0.002
-        self.명중       = 10   + self.DEX * 2
-        self.회복       = 5    + self.INT * 3
-        self.방어력     = 50   + self.CON * 2
-        self.HP         = 2000 + self.CON * 15
-        self.회피       = 0.1  + self.LUK * 0.001
-        self.치명타증폭 = 1.25 + self.LUK * 0.01
+        self.능력치세팅()
         self.저장()
 
     def 장착_장비(self, 인덱스):
         if type(self.인벤토리.목록[인덱스]) == 무기:
             for key, value in self.무기.추가능력치.items():
-                if   key=='STR': self.STR -= value
-                elif key=='DEX': self.DEX -= value
-                elif key=='INT': self.INT -= value
-                elif key=='CON': self.CON -= value
-                elif key=='LUK': self.LUK -= value
+                if   key=='STR': self.추가STR -= value
+                elif key=='DEX': self.추가DEX -= value
+                elif key=='INT': self.추가INT -= value
+                elif key=='CON': self.추가CON -= value
+                elif key=='LUK': self.추가LUK -= value
             for key, value in self.인벤토리.목록[인덱스].추가능력치.items():
-                if   key=='STR': self.STR += value
-                elif key=='DEX': self.DEX += value
-                elif key=='INT': self.INT += value
-                elif key=='CON': self.CON += value
-                elif key=='LUK': self.LUK += value
+                if   key=='STR': self.추가STR += value
+                elif key=='DEX': self.추가DEX += value
+                elif key=='INT': self.추가INT += value
+                elif key=='CON': self.추가CON += value
+                elif key=='LUK': self.추가LUK += value
             임시무기 = self.무기
             self.무기 = self.인벤토리.목록[인덱스]
             if 임시무기.이름 != '주먹': self.인벤토리.추가_인덱스(임시무기, 인덱스)
             else:                       self.인벤토리.목록[인덱스] = None
+            self.능력치세팅()
+            #self.최종STR = self.STR + self.추가STR
+            #self.최종DEX = self.DEX + self.추가DEX
+            #self.최종INT = self.INT + self.추가INT
+            #self.최종CON = self.CON + self.추가CON
+            #self.최종LUK = self.LUK + self.추가LUK
             self.저장()
         elif type(self.인벤토리.목록[인덱스]) == 갑옷:
             if self.갑옷 != None:
                 for key, value in self.갑옷.추가능력치.items():
-                    if   key=='STR': self.STR -= value
-                    elif key=='DEX': self.DEX -= value
-                    elif key=='INT': self.INT -= value
-                    elif key=='CON': self.CON -= value
-                    elif key=='LUK': self.LUK -= value
+                    if   key=='STR': self.추가STR -= value
+                    elif key=='DEX': self.추가DEX -= value
+                    elif key=='INT': self.추가INT -= value
+                    elif key=='CON': self.추가CON -= value
+                    elif key=='LUK': self.추가LUK -= value
                 for key, value in self.인벤토리.목록[인덱스].추가능력치.items():
-                    if   key=='STR': self.STR += value
-                    elif key=='DEX': self.DEX += value
-                    elif key=='INT': self.INT += value
-                    elif key=='CON': self.CON += value
-                    elif key=='LUK': self.LUK += value
+                    if   key=='STR': self.추가STR += value
+                    elif key=='DEX': self.추가DEX += value
+                    elif key=='INT': self.추가INT += value
+                    elif key=='CON': self.추가CON += value
+                    elif key=='LUK': self.추가LUK += value
                 임시갑옷 = self.갑옷
                 self.갑옷 = self.인벤토리.목록[인덱스]
                 self.인벤토리.추가_인덱스(임시갑옷, 인덱스)
             else:
                 for key, value in self.인벤토리.목록[인덱스].추가능력치.items():
-                    if   key=='STR': self.STR += value
-                    elif key=='DEX': self.DEX += value
-                    elif key=='INT': self.INT += value
-                    elif key=='CON': self.CON += value
-                    elif key=='LUK': self.LUK += value
+                    if   key=='STR': self.추가STR += value
+                    elif key=='DEX': self.추가DEX += value
+                    elif key=='INT': self.추가INT += value
+                    elif key=='CON': self.추가CON += value
+                    elif key=='LUK': self.추가LUK += value
                 self.갑옷 = self.인벤토리.목록[인덱스]
                 self.인벤토리.목록[인덱스] = None
+            self.능력치세팅()
+            #self.최종STR = self.STR + self.추가STR
+            #self.최종DEX = self.DEX + self.추가DEX
+            #self.최종INT = self.INT + self.추가INT
+            #self.최종CON = self.CON + self.추가CON
+            #self.최종LUK = self.LUK + self.추가LUK
             self.저장()
             
 
     def 해제_무기(self):
         if self.무기.이름 == '주먹': return
         for key, value in self.무기.추가능력치.items():
-            if   key=='STR': self.STR -= value
-            elif key=='DEX': self.DEX -= value
-            elif key=='INT': self.INT -= value
-            elif key=='CON': self.CON -= value
-            elif key=='LUK': self.LUK -= value
+            if   key=='STR': self.추가STR -= value
+            elif key=='DEX': self.추가DEX -= value
+            elif key=='INT': self.추가INT -= value
+            elif key=='CON': self.추가CON -= value
+            elif key=='LUK': self.추가LUK -= value
         self.인벤토리.추가(self.무기)
         self.무기 = 무기()
+        self.최종STR = self.STR + self.추가STR
+        self.최종DEX = self.DEX + self.추가DEX
+        self.최종INT = self.INT + self.추가INT
+        self.최종CON = self.CON + self.추가CON
+        self.최종LUK = self.LUK + self.추가LUK
         self.저장()
 
     def 출력(self):
@@ -171,20 +283,20 @@ class 캐릭터():
         print(f'{bcolors.BOLD}{self.이름}{bcolors.ENDC}[{self.직업}] Lv.{self.레벨}')
         self.무기.출력()
         if self.갑옷: self.갑옷.출력()
-        print(f' HP         : {self.HP}')
-        print(f' MP         : {self.MP}')
-        print(f' STR        : {self.STR}')
-        print(f' DEX        : {self.DEX}')
-        print(f' INT        : {self.INT}')
-        print(f' CON        : {self.CON}')
-        print(f' LUK        : {self.LUK}')
-        print(f' 공격력     : {self.공격력}')
-        print(f' 방어력     : {self.방어력}')
-        print(f' 치명타     : {trunc(self.치명타, 2)}')
-        print(f' 치명타증폭 : {trunc(self.치명타증폭, 2)}')
-        print(f' 명중       : {self.명중}')
-        print(f' 회피       : {trunc(self.회피, 2)}')
-        print(f' 최종데미지 : {int(self.공격력 + self.무기.최종증폭*self.무기.최종최소데미지)} - {int(self.공격력 + self.무기.최종증폭*self.무기.최종최대데미지)}')
+        print(f' HP         : {self.HP}(+{self.추가HP})')
+        print(f' MP         : {self.MP}(+{self.추가MP})')
+        print(f' STR        : {self.STR}(+{self.추가STR})')
+        print(f' DEX        : {self.DEX}(+{self.추가DEX})')
+        print(f' INT        : {self.INT}(+{self.추가INT})')
+        print(f' CON        : {self.CON}(+{self.추가CON})')
+        print(f' LUK        : {self.LUK}(+{self.추가LUK})')
+        print(f' 공격력     : {self.공격력}(+{self.추가공격력})')
+        print(f' 방어력     : {self.방어력}(+{self.추가방어력})')
+        print(f' 치명타     : {trunc(self.치명타, 2)}(+{trunc(self.추가치명타, 2)})')
+        print(f' 치명타증폭 : {trunc(self.치명타증폭, 2)}(+{trunc(self.추가치명타증폭, 2)})')
+        print(f' 명중       : {self.명중}(+{self.추가명중})')
+        print(f' 회피       : {trunc(self.회피, 2)}(+{trunc(self.추가회피, 2)})')
+        print(f' 최종데미지 : {int(self.최종공격력 + self.무기.최종증폭*self.무기.최종최소데미지)} - {int(self.최종공격력 + self.무기.최종증폭*self.무기.최종최대데미지)}')
         print(f' 보유스킬   : {self.스킬리스트[0].이름} Lv.{self.스킬리스트[0].레벨}')
         for 스킬 in self.스킬리스트[1:]:
             print(f'              {스킬.이름} Lv.{스킬.레벨}')
@@ -199,12 +311,12 @@ class 캐릭터():
         f = open(f'./save/{self.이름}.info', 'w')
         f.write(f'이름 : {self.이름}\n')
         f.write(f'레벨 : {self.레벨}\n')
+        f.write(f'직업 : {self.직업}\n')
         f.write(f'STR : {self.STR}\n')
         f.write(f'DEX : {self.DEX}\n')
         f.write(f'INT : {self.INT}\n')
         f.write(f'CON : {self.CON}\n')
         f.write(f'LUK : {self.LUK}\n')
-        f.write(f'직업 : {self.직업}\n')
         f.write(f'공격력 : {self.공격력}\n')
         f.write(f'HP : {self.HP}\n')
         f.write(f'MP : {self.MP}\n')
@@ -216,6 +328,38 @@ class 캐릭터():
         f.write(f'내성 : {self.내성}\n')
         f.write(f'회복 : {self.회복}\n')
         f.write(f'속도 : {self.속도}\n')
+        f.write(f'추가STR : {self.추가STR}\n')
+        f.write(f'추가DEX : {self.추가DEX}\n')
+        f.write(f'추가INT : {self.추가INT}\n')
+        f.write(f'추가CON : {self.추가CON}\n')
+        f.write(f'추가LUK : {self.추가LUK}\n')
+        f.write(f'추가공격력 : {self.추가공격력}\n')
+        f.write(f'추가HP : {self.추가HP}\n')
+        f.write(f'추가MP : {self.추가MP}\n')
+        f.write(f'추가명중 : {self.추가명중}\n')
+        f.write(f'추가회피 : {self.추가회피}\n')
+        f.write(f'추가치명타 : {self.추가치명타}\n')
+        f.write(f'추가치명타증폭 : {self.추가치명타증폭}\n')
+        f.write(f'추가방어력 : {self.추가방어력}\n')
+        f.write(f'추가내성 : {self.추가내성}\n')
+        f.write(f'추가회복 : {self.추가회복}\n')
+        f.write(f'추가속도 : {self.추가속도}\n')
+        f.write(f'최종STR : {self.최종STR}\n')
+        f.write(f'최종DEX : {self.최종DEX}\n')
+        f.write(f'최종INT : {self.최종INT}\n')
+        f.write(f'최종CON : {self.최종CON}\n')
+        f.write(f'최종LUK : {self.최종LUK}\n')
+        f.write(f'최종공격력 : {self.최종공격력}\n')
+        f.write(f'최종HP : {self.최종HP}\n')
+        f.write(f'최종MP : {self.최종MP}\n')
+        f.write(f'최종명중 : {self.최종명중}\n')
+        f.write(f'최종회피 : {self.최종회피}\n')
+        f.write(f'최종치명타 : {self.최종치명타}\n')
+        f.write(f'최종치명타증폭 : {self.최종치명타증폭}\n')
+        f.write(f'최종방어력 : {self.최종방어력}\n')
+        f.write(f'최종내성 : {self.최종내성}\n')
+        f.write(f'최종회복 : {self.최종회복}\n')
+        f.write(f'최종속도 : {self.최종속도}\n')
         f.write(f'경험치 : {self.경험치}\n')
         f.write(f'필요경험치 : {self.필요경험치}\n')
         f.write(f'코인 : {self.코인}\n')
@@ -377,12 +521,12 @@ class 캐릭터():
             if len(key_list) == 1:
                 if   key_list[0] == '이름': self.이름 = value
                 elif key_list[0] == '레벨': self.레벨 = int(value)
+                elif key_list[0] == '직업': self.직업 = value
                 elif key_list[0] == 'STR':  self.STR  = int(value)
                 elif key_list[0] == 'DEX':  self.DEX  = int(value)
                 elif key_list[0] == 'INT':  self.INT  = int(value)
                 elif key_list[0] == 'CON':  self.CON  = int(value)
                 elif key_list[0] == 'LUK':  self.LUK  = int(value)
-                elif key_list[0] == '직업': self.직업 = value
                 elif key_list[0] == '공격력': self.공격력 = int(value)
                 elif key_list[0] == 'HP': self.HP = int(value)
                 elif key_list[0] == 'MP': self.MP = int(value)
@@ -394,6 +538,38 @@ class 캐릭터():
                 elif key_list[0] == '내성': self.내성 = float(value)
                 elif key_list[0] == '회복': self.회복 = int(value)
                 elif key_list[0] == '속도': self.속도 = int(value)
+                elif key_list[0] == '추가STR':  self.추가STR  = int(value)
+                elif key_list[0] == '추가DEX':  self.추가DEX  = int(value)
+                elif key_list[0] == '추가INT':  self.추가INT  = int(value)
+                elif key_list[0] == '추가CON':  self.추가CON  = int(value)
+                elif key_list[0] == '추가LUK':  self.추가LUK  = int(value)
+                elif key_list[0] == '추가공격력': self.추가공격력 = int(value)
+                elif key_list[0] == '추가HP': self.추가HP = int(value)
+                elif key_list[0] == '추가MP': self.추가MP = int(value)
+                elif key_list[0] == '추가명중': self.추가명중 = int(value)
+                elif key_list[0] == '추가회피': self.추가회피 = float(value)
+                elif key_list[0] == '추가치명타': self.추가치명타 = float(value)
+                elif key_list[0] == '추가치명타증폭': self.추가치명타증폭 = float(value)
+                elif key_list[0] == '추가방어력': self.추가방어력 = int(value)
+                elif key_list[0] == '추가내성': self.추가내성 = float(value)
+                elif key_list[0] == '추가회복': self.추가회복 = int(value)
+                elif key_list[0] == '추가속도': self.추가속도 = int(value)
+                elif key_list[0] == '최종STR':  self.최종STR  = int(value)
+                elif key_list[0] == '최종DEX':  self.최종DEX  = int(value)
+                elif key_list[0] == '최종INT':  self.최종INT  = int(value)
+                elif key_list[0] == '최종CON':  self.최종CON  = int(value)
+                elif key_list[0] == '최종LUK':  self.최종LUK  = int(value)
+                elif key_list[0] == '최종공격력': self.최종공격력 = int(value)
+                elif key_list[0] == '최종HP': self.최종HP = int(value)
+                elif key_list[0] == '최종MP': self.최종MP = int(value)
+                elif key_list[0] == '최종명중': self.최종명중 = int(value)
+                elif key_list[0] == '최종회피': self.최종회피 = float(value)
+                elif key_list[0] == '최종치명타': self.최종치명타 = float(value)
+                elif key_list[0] == '최종치명타증폭': self.최종치명타증폭 = float(value)
+                elif key_list[0] == '최종방어력': self.최종방어력 = int(value)
+                elif key_list[0] == '최종내성': self.최종내성 = float(value)
+                elif key_list[0] == '최종회복': self.최종회복 = int(value)
+                elif key_list[0] == '최종속도': self.최종속도 = int(value)
                 elif key_list[0] == '경험치': self.경험치 = int(value)
                 elif key_list[0] == '필요경험치': self.필요경험치 = int(value)
                 elif key_list[0] == '코인': self.코인 = int(value)
@@ -599,7 +775,6 @@ class 캐릭터():
                             elif key3 == 'LUK': 임시갑옷.추가능력치['LUK'] = int(value2)
 
             elif 아이템딕셔너리[key1]['유형'] == '주문서':
-                print(아이템딕셔너리[key1])
                 임시소비 = 소비('임시소비', '주문서')
                 for key2, value in 아이템딕셔너리[key1].items():
                     if   key2 == 'id': 임시소비.id = value
