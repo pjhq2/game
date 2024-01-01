@@ -113,9 +113,11 @@ class 캐릭터():
                 elif key=='INT': self.INT += value
                 elif key=='CON': self.CON += value
                 elif key=='LUK': self.LUK += value
-            if self.무기.이름 != '주먹': self.인벤토리.추가(self.무기)
+            임시무기 = self.무기
             self.무기 = self.인벤토리.목록[인덱스]
-            self.인벤토리.목록[인덱스] = None
+            if 임시무기.이름 != '주먹': self.인벤토리.추가_인덱스(임시무기, 인덱스)
+            else:                       self.인벤토리.목록[인덱스] = None
+            self.저장()
 
     def 해제_무기(self):
         if self.무기.이름 == '주먹': return
@@ -127,6 +129,7 @@ class 캐릭터():
             elif key=='LUK': self.LUK -= value
         self.인벤토리.추가(self.무기)
         self.무기 = 무기()
+        self.저장()
 
     def 출력(self):
         print('==============================')
@@ -333,7 +336,13 @@ class 캐릭터():
                                 아이템스킬딕셔너리[key_list[4]][key_list[5]] = value
                             아이템딕셔너리[key_list[1]][key_list[3]] = 아이템스킬딕셔너리
                         else:
-                            아이템딕셔너리[key_list[1]] = {key_list[3]: value}
+                            if key_list[3] == '추가능력치':
+                                if key_list[3] not in 아이템딕셔너리[key_list[1]]:
+                                    아이템딕셔너리[key_list[1]][key_list[3]] = {key_list[4]: value}
+                                else:
+                                    아이템딕셔너리[key_list[1]][key_list[3]][key_list[4]] = value
+                            else:
+                                아이템딕셔너리[key_list[1]] = {key_list[3]: value}
                     else:
                         if key_list[3] == '스킬':
                             if key_list[4] not in 아이템스킬딕셔너리:
@@ -342,7 +351,13 @@ class 캐릭터():
                                 아이템스킬딕셔너리[key_list[4]][key_list[5]] = value
                             아이템딕셔너리[key_list[1]][key_list[3]] = 아이템스킬딕셔너리
                         else:
-                            아이템딕셔너리[key_list[1]][key_list[3]] = value
+                            if key_list[3] == '추가능력치':
+                                if key_list[3] not in 아이템딕셔너리[key_list[1]]:
+                                    아이템딕셔너리[key_list[1]][key_list[3]] = {key_list[4]: value}
+                                else:
+                                    아이템딕셔너리[key_list[1]][key_list[3]][key_list[4]] = value
+                            else:
+                                아이템딕셔너리[key_list[1]][key_list[3]] = value
         for key1 in 스킬딕셔너리.keys():
             임시스킬 = 스킬('임시스킬')
             for key2, value in 스킬딕셔너리[key1].items():
@@ -376,6 +391,7 @@ class 캐릭터():
             인벤토리인덱스 = -1
             if 아이템딕셔너리[key1]['유형'] == '무기':
                 임시무기 = 무기('임시무기')
+                print(아이템딕셔너리[key1])
                 for key2, value in 아이템딕셔너리[key1].items():
                     if   key2 == 'id': 임시무기.id = value
                     elif key2 == '이름': 임시무기.이름 = value
@@ -394,11 +410,12 @@ class 캐릭터():
                     elif key2 == '최종최대데미지': 임시무기.최종최대데미지 = int(value)
                     elif key2 == '최종증폭': 임시무기.최종증폭 = float(value)
                     elif key2 == '추가능력치':
-                        if   key_list[2] == 'STR': 임시무기.추가능력치['STR'] = int(value)
-                        elif key_list[2] == 'DEX': 임시무기.추가능력치['DEX'] = int(value)
-                        elif key_list[2] == 'INT': 임시무기.추가능력치['INT'] = int(value)
-                        elif key_list[2] == 'CON': 임시무기.추가능력치['CON'] = int(value)
-                        elif key_list[2] == 'LUK': 임시무기.추가능력치['LUK'] = int(value)
+                        for key3, value2 in value.items():
+                            if   key3 == 'STR': 임시무기.추가능력치['STR'] = int(value2)
+                            elif key3 == 'DEX': 임시무기.추가능력치['DEX'] = int(value2)
+                            elif key3 == 'INT': 임시무기.추가능력치['INT'] = int(value2)
+                            elif key3 == 'CON': 임시무기.추가능력치['CON'] = int(value2)
+                            elif key3 == 'LUK': 임시무기.추가능력치['LUK'] = int(value2)
                     elif key2 == '최고강화레벨': 임시무기.최고강화레벨 = int(value)
                     elif key2 == '스킬':
                         임시스킬 = 스킬('임시스킬')
