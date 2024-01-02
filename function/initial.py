@@ -4,6 +4,8 @@ from object.Town      import 마을
 from object.Character import 캐릭터
 
 def get_all_character():
+    if not os.path.isdir('./save'):
+        os.mkdir('./save')
     캐릭터파일리스트 = os.listdir('./save')
     캐릭터리스트     = []
     for 캐릭터파일 in 캐릭터파일리스트:
