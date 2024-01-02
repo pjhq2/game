@@ -32,8 +32,7 @@ def character_town_sequence(캐릭터이름):
 
 def hunt_sequence(불러온캐릭터):
     # 몬스터 사냥
-    create_monster('주황버섯')
-    주황버섯 = 마을.불러오기('주황버섯')
+    주황버섯 = create_monster('주황버섯')
     hunt(불러온캐릭터, 주황버섯)
     # 캐릭터 저장
     불러온캐릭터.저장()
