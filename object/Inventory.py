@@ -15,9 +15,11 @@ class 인벤토리():
                 return 인벤토리인덱스, 아이템
         return -1, None
 
-    def 추가(self, 아이템):
+    def 추가(self, 아이템, 개수=1):
         빈공간인덱스 = self.빈공간인덱스()
         self.목록[빈공간인덱스] = 아이템
+        if type(아이템) == 소비:
+            self.목록[빈공간인덱스].개수 += 개수
         self.모두출력()
         return 빈공간인덱스
     
@@ -30,6 +32,11 @@ class 인벤토리():
             return
         self.목록[인덱스] = None
         self.모두출력()
+
+    def 이동(self, 이전인덱스, 이후인덱스):
+        if self.목록[이전인덱스] != None:
+            self.목록[이전인덱스], self.목록[이후인덱스] = self.목록[이후인덱스], self.목록[이전인덱스]
+            self.모두출력()
     
     def 빈공간인덱스(self):
         for 인덱스 in range(len(self.목록)):

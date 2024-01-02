@@ -5,11 +5,9 @@ from object.Character import 캐릭터
 
 def get_all_character():
     캐릭터파일리스트 = os.listdir('./save')
-    캐릭터이름리스트 = []
     캐릭터리스트     = []
     for 캐릭터파일 in 캐릭터파일리스트:
-        캐릭터이름리스트.append(캐릭터파일[:-5])
-    for 캐릭터이름 in 캐릭터이름리스트:
+        캐릭터이름 = 캐릭터파일[:-5]
         캐릭터리스트.append(캐릭터().불러오기(캐릭터이름))
     return 캐릭터리스트
 

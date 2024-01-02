@@ -118,7 +118,6 @@ class 캐릭터():
                 elif key == 'CON': self.추가CON += value
                 elif key == 'LUK': self.추가LUK += value
         if self.갑옷:
-            self.갑옷.출력()
             self.추가방어력 += self.갑옷.최종방어력
             self.추가HP     += self.갑옷.최종HP
             self.추가내성   += self.갑옷.최종내성
@@ -220,11 +219,6 @@ class 캐릭터():
             if 임시무기.이름 != '주먹': self.인벤토리.추가_인덱스(임시무기, 인덱스)
             else:                       self.인벤토리.목록[인덱스] = None
             self.능력치세팅()
-            #self.최종STR = self.STR + self.추가STR
-            #self.최종DEX = self.DEX + self.추가DEX
-            #self.최종INT = self.INT + self.추가INT
-            #self.최종CON = self.CON + self.추가CON
-            #self.최종LUK = self.LUK + self.추가LUK
             self.저장()
         elif type(self.인벤토리.목록[인덱스]) == 갑옷:
             if self.갑옷 != None:
@@ -253,11 +247,6 @@ class 캐릭터():
                 self.갑옷 = self.인벤토리.목록[인덱스]
                 self.인벤토리.목록[인덱스] = None
             self.능력치세팅()
-            #self.최종STR = self.STR + self.추가STR
-            #self.최종DEX = self.DEX + self.추가DEX
-            #self.최종INT = self.INT + self.추가INT
-            #self.최종CON = self.CON + self.추가CON
-            #self.최종LUK = self.LUK + self.추가LUK
             self.저장()
             
 
@@ -792,22 +781,30 @@ class 캐릭터():
         마을.저장(self)
         return self
         
-    def 아이템구매(self, 아이템):
+    def 아이템구매(self, 아이템, 개수=1):
         인벤토리인덱스, 인벤토리아이템 = self.인벤토리.이름으로찾기(아이템.이름)
         if not 인벤토리아이템:
-            인벤토리인덱스 = self.인벤토리.추가(아이템)
-            self.인벤토리.목록[인벤토리인덱스].개수 += 1
+            인벤토리인덱스 = self.인벤토리.추가(아이템, 개수)
         else:
-            인벤토리아이템.개수 += 1
+            if 아이템.유형 == '무기' or 아이템.유형 == '갑옷':
+                인벤토리인덱스 = self.인벤토리.추가(아이템)
+            elif type(아이템) == 소비:
+                self.인벤토리.목록[인벤토리인덱스].개수 += 개수
+                self.인벤토리.모두출력()
+
         self.저장()
         return 인벤토리인덱스
 
     def 아이템판매(self, 인벤토리인덱스, 개수=1):
-        인벤토리아이템 = self.인벤토리.목록[인벤토리인덱스]
-        if 인벤토리아이템.유형 == '무기':
-            인벤토리.제거(인벤토리인덱스)
-        elif type(인벤토리아이템) == 소비:
-            if 인벤토리아이템.개수 > 개수:
-                인벤토리아이템.개수 -= 개수
-            else:
-                인벤토리.제거(인벤토리인덱스)
+        if self.인벤토리.목록[인벤토리인덱스] != None:
+            인벤토리아이템 = self.인벤토리.목록[인벤토리인덱스]
+            if 인벤토리아이템.유형 == '무기':
+                self.인벤토리.제거(인벤토리인덱스)
+            elif 인벤토리아이템.유형 == '갑옷':
+                self.인벤토리.제거(인벤토리인덱스)
+            elif type(인벤토리아이템) == 소비:
+                if 인벤토리아이템.개수 > 개수:
+                    인벤토리아이템.개수 -= 개수
+                else:
+                    self.인벤토리.제거(인벤토리인덱스)
+            self.인벤토리.모두출력()
