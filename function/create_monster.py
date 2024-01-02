@@ -1,7 +1,9 @@
 from object.Town    import 마을
-from object.Monster import 몬스터
+from object.Monster import *
 
 def create_monster(몬스터이름):
-    생성몬스터 = 몬스터(몬스터이름)
-    마을.저장(생성몬스터)
-    return 생성몬스터
+    if   몬스터이름 == '주황버섯': return 몬스터('주황버섯')
+    elif 몬스터이름 == '산적'    : return 산적()
+    elif 몬스터이름 == '구미호'  : return 구미호()
+
+    raise(NameError)

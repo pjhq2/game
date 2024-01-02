@@ -1,8 +1,8 @@
 from object.Town      import 마을
 from object.Character import 캐릭터
-from object.Weapon    import 제작_엑스칼리버
-from object.Weapon    import 제작_진검
-from object.Weapon    import 제작_나무몽둥이
+from object.Weapon    import 엑스칼리버
+from object.Weapon    import 진검
+from object.Weapon    import 나무몽둥이
 from object.Skill     import 습득_검격
 
 def test_create_character():

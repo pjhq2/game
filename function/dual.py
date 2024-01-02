@@ -5,7 +5,8 @@ from color             import bcolors
 
 from object.Town       import 마을
 from object.Character  import 캐릭터
-from object.Weapon     import 제작_진검, 제작_엑스칼리버
+from object.Weapon     import 진검
+from object.Weapon     import 엑스칼리버
 
 from .create_character import create_character
 
@@ -29,17 +30,17 @@ class DualInfo():
         self.선공캐릭터정보['레벨']                     = self.선공캐릭터.레벨
         self.선공캐릭터정보['무기이름']                 = self.선공캐릭터.무기.이름
         self.선공캐릭터정보['무기강화레벨']             = self.선공캐릭터.무기.강화레벨
-        self.선공캐릭터정보['HP']                       = self.선공캐릭터.HP
-        self.선공캐릭터정보['공격력최종증폭최소데미지'] = self.선공캐릭터.공격력+self.선공캐릭터.무기.최종증폭*self.선공캐릭터.무기.최종최소데미지
-        self.선공캐릭터정보['공격력최종증폭최대데미지'] = self.선공캐릭터.공격력+self.선공캐릭터.무기.최종증폭*self.선공캐릭터.무기.최종최대데미지
+        self.선공캐릭터정보['HP']                       = self.선공캐릭터.최종HP
+        self.선공캐릭터정보['공격력최종증폭최소데미지'] = self.선공캐릭터.최종공격력+self.선공캐릭터.무기.최종증폭*self.선공캐릭터.무기.최종최소데미지
+        self.선공캐릭터정보['공격력최종증폭최대데미지'] = self.선공캐릭터.최종공격력+self.선공캐릭터.무기.최종증폭*self.선공캐릭터.무기.최종최대데미지
         self.후공캐릭터정보 = {}
         self.후공캐릭터정보['이름']                     = self.후공캐릭터.이름
         self.후공캐릭터정보['레벨']                     = self.후공캐릭터.레벨
         self.후공캐릭터정보['무기이름']                 = self.후공캐릭터.무기.이름
         self.후공캐릭터정보['무기강화레벨']             = self.후공캐릭터.무기.강화레벨
-        self.후공캐릭터정보['HP']                       = self.후공캐릭터.HP
-        self.후공캐릭터정보['공격력최종증폭최소데미지'] = self.후공캐릭터.공격력+self.후공캐릭터.무기.최종증폭*self.후공캐릭터.무기.최종최소데미지
-        self.후공캐릭터정보['공격력최종증폭최대데미지'] = self.후공캐릭터.공격력+self.후공캐릭터.무기.최종증폭*self.후공캐릭터.무기.최종최대데미지
+        self.후공캐릭터정보['HP']                       = self.후공캐릭터.최종HP
+        self.후공캐릭터정보['공격력최종증폭최소데미지'] = self.후공캐릭터.최종공격력+self.후공캐릭터.무기.최종증폭*self.후공캐릭터.무기.최종최소데미지
+        self.후공캐릭터정보['공격력최종증폭최대데미지'] = self.후공캐릭터.최종공격력+self.후공캐릭터.무기.최종증폭*self.후공캐릭터.무기.최종최대데미지
 
     def 출력(self):
         선공캐릭터정보 = self.선공캐릭터정보
@@ -88,13 +89,13 @@ def 듀얼공방(선공캐릭터, 후공캐릭터, 선공캐릭터_HP, 후공캐
     후공출력내용 = fill_str_with_space(f' {bcolors.BOLD}{후공캐릭터.이름}{bcolors.ENDC} Lv.{후공캐릭터.레벨}', 출력최대길이-7+8, ' ')
     print(후공출력내용, end='DEFENSE\n')
     #-------------------- Line 2 --------------------
-    선공캐릭터HP상태  = f' HP : {선공캐릭터_HP} / {선공캐릭터.HP}'
+    선공캐릭터HP상태  = f' HP : {선공캐릭터_HP} / {선공캐릭터.최종HP}'
     선공캐릭터HP상태_ = f'{bcolors.OKGREEN}{선공캐릭터HP상태}{bcolors.ENDC}'
     print(선공캐릭터HP상태_, end='')
     print(' '*(출력최대길이-len(선공캐릭터HP상태)-len(f'{str(선공캐릭터최종데미지)}')), end='')
     print(f'{선공캐릭터최종데미지_}', end='')
     print(' '*6, end='')
-    후공캐릭터HP상태  = f' HP : {후공캐릭터_HP} / {후공캐릭터.HP}'
+    후공캐릭터HP상태  = f' HP : {후공캐릭터_HP} / {후공캐릭터.최종HP}'
     후공캐릭터HP상태_ = f'{bcolors.OKGREEN}{후공캐릭터HP상태}{bcolors.ENDC}'
     print(후공캐릭터HP상태_, end='')
     print(' '*(출력최대길이-len(후공캐릭터HP상태)-len(f'{str(막은피해)}')), end='')
@@ -140,13 +141,13 @@ def 듀얼공방(선공캐릭터, 후공캐릭터, 선공캐릭터_HP, 후공캐
     후공출력내용 = fill_str_with_space(f' {bcolors.BOLD}{후공캐릭터.이름}{bcolors.ENDC} Lv.{후공캐릭터.레벨}', 출력최대길이-7+8, ' ')
     print(후공출력내용, end='OFFENSE\n')
     #-------------------- Line 2 --------------------
-    선공캐릭터HP상태  = f' HP : {선공캐릭터_HP} / {선공캐릭터.HP}'
+    선공캐릭터HP상태  = f' HP : {선공캐릭터_HP} / {선공캐릭터.최종HP}'
     선공캐릭터HP상태_ = f'{bcolors.OKGREEN}{선공캐릭터HP상태}{bcolors.ENDC}'
     print(선공캐릭터HP상태_, end='')
     print(' '*(출력최대길이-len(선공캐릭터HP상태)-len(f'{str(막은피해)}')), end='')
     print(f'{막은피해_}', end='')
     print(' '*6, end='')
-    후공캐릭터HP상태  = f' HP : {후공캐릭터_HP} / {후공캐릭터.HP}'
+    후공캐릭터HP상태  = f' HP : {후공캐릭터_HP} / {후공캐릭터.최종HP}'
     후공캐릭터HP상태_ = f'{bcolors.OKGREEN}{후공캐릭터HP상태}{bcolors.ENDC}'
     print(후공캐릭터HP상태_, end='')
     print(' '*(출력최대길이-len(후공캐릭터HP상태)-len(f'{str(후공캐릭터최종데미지)}')), end='')
@@ -173,8 +174,8 @@ def dual(캐릭터_1, 캐릭터_2):
     듀얼정보.출력()
     선공캐릭터    = 듀얼정보.선공캐릭터
     후공캐릭터    = 듀얼정보.후공캐릭터
-    선공캐릭터_HP = 선공캐릭터.HP
-    후공캐릭터_HP = 후공캐릭터.HP
+    선공캐릭터_HP = 선공캐릭터.최종HP
+    후공캐릭터_HP = 후공캐릭터.최종HP
 
     결과 = [[캐릭터_1.이름, 0], [캐릭터_2.이름, 0]]
 

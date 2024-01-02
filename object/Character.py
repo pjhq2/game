@@ -6,7 +6,7 @@ from color        import bcolors
 
 from .Town        import 마을
 from .Weapon      import 무기
-from .Armor       import 갑옷
+from .Armor       import 모자, 갑옷, 장갑, 신발, 코어
 from .Skill       import 스킬
 from .Inventory   import 인벤토리
 from .Consumption import 소비
@@ -117,6 +117,16 @@ class 캐릭터():
                 elif key == 'INT': self.추가INT += value
                 elif key == 'CON': self.추가CON += value
                 elif key == 'LUK': self.추가LUK += value
+        if self.모자:
+            self.추가방어력 += self.모자.최종방어력
+            self.추가HP     += self.모자.최종HP
+            self.추가회복   += self.모자.최종회복
+            for key, value in self.모자.추가능력치.items():
+                if   key == 'STR': self.추가STR += value
+                elif key == 'DEX': self.추가DEX += value
+                elif key == 'INT': self.추가INT += value
+                elif key == 'CON': self.추가CON += value
+                elif key == 'LUK': self.추가LUK += value
         if self.갑옷:
             self.추가방어력 += self.갑옷.최종방어력
             self.추가HP     += self.갑옷.최종HP
@@ -124,6 +134,35 @@ class 캐릭터():
             self.추가명중   += self.갑옷.최종명중
             self.추가회피   += self.갑옷.최종회피
             for key, value in self.갑옷.추가능력치.items():
+                if   key == 'STR': self.추가STR += value
+                elif key == 'DEX': self.추가DEX += value
+                elif key == 'INT': self.추가INT += value
+                elif key == 'CON': self.추가CON += value
+                elif key == 'LUK': self.추가LUK += value
+        if self.장갑:
+            self.추가방어력 += self.장갑.최종방어력
+            self.추가명중   += self.장갑.최종명중
+            self.추가내성   += self.장갑.최종내성
+            for key, value in self.장갑.추가능력치.items():
+                if   key == 'STR': self.추가STR += value
+                elif key == 'DEX': self.추가DEX += value
+                elif key == 'INT': self.추가INT += value
+                elif key == 'CON': self.추가CON += value
+                elif key == 'LUK': self.추가LUK += value
+        if self.신발:
+            self.추가방어력 += self.신발.최종방어력
+            self.추가회피   += self.신발.최종회피
+            self.추가속도   += self.신발.최종속도
+            for key, value in self.신발.추가능력치.items():
+                if   key == 'STR': self.추가STR += value
+                elif key == 'DEX': self.추가DEX += value
+                elif key == 'INT': self.추가INT += value
+                elif key == 'CON': self.추가CON += value
+                elif key == 'LUK': self.추가LUK += value
+        if self.코어:
+            self.추가치명타     += self.코어.최종치명타
+            self.추가치명타증폭 += self.코어.최종치명타증폭
+            for key, value in self.코어.추가능력치.items():
                 if   key == 'STR': self.추가STR += value
                 elif key == 'DEX': self.추가DEX += value
                 elif key == 'INT': self.추가INT += value
@@ -198,7 +237,6 @@ class 캐릭터():
                 elif i==3: self.CON += random.randint(0, 1)
                 elif i==4: self.LUK += random.randint(2, 3)
         self.능력치세팅()
-        self.저장()
 
     def 장착_장비(self, 인덱스):
         if type(self.인벤토리.목록[인덱스]) == 무기:
@@ -218,8 +256,32 @@ class 캐릭터():
             self.무기 = self.인벤토리.목록[인덱스]
             if 임시무기.이름 != '주먹': self.인벤토리.추가_인덱스(임시무기, 인덱스)
             else:                       self.인벤토리.목록[인덱스] = None
-            self.능력치세팅()
-            self.저장()
+        elif type(self.인벤토리.목록[인덱스]) == 모자:
+            if self.모자 != None:
+                for key, value in self.모자.추가능력치.items():
+                    if   key=='STR': self.추가STR -= value
+                    elif key=='DEX': self.추가DEX -= value
+                    elif key=='INT': self.추가INT -= value
+                    elif key=='CON': self.추가CON -= value
+                    elif key=='LUK': self.추가LUK -= value
+                for key, value in self.인벤토리.목록[인덱스].추가능력치.items():
+                    if   key=='STR': self.추가STR += value
+                    elif key=='DEX': self.추가DEX += value
+                    elif key=='INT': self.추가INT += value
+                    elif key=='CON': self.추가CON += value
+                    elif key=='LUK': self.추가LUK += value
+                임시모자 = self.모자
+                self.모자 = self.인벤토리.목록[인덱스]
+                self.인벤토리.추가_인덱스(임시모자, 인덱스)
+            else:
+                for key, value in self.인벤토리.목록[인덱스].추가능력치.items():
+                    if   key=='STR': self.추가STR += value
+                    elif key=='DEX': self.추가DEX += value
+                    elif key=='INT': self.추가INT += value
+                    elif key=='CON': self.추가CON += value
+                    elif key=='LUK': self.추가LUK += value
+                self.모자 = self.인벤토리.목록[인덱스]
+                self.인벤토리.목록[인덱스] = None
         elif type(self.인벤토리.목록[인덱스]) == 갑옷:
             if self.갑옷 != None:
                 for key, value in self.갑옷.추가능력치.items():
@@ -246,8 +308,86 @@ class 캐릭터():
                     elif key=='LUK': self.추가LUK += value
                 self.갑옷 = self.인벤토리.목록[인덱스]
                 self.인벤토리.목록[인덱스] = None
-            self.능력치세팅()
-            self.저장()
+        elif type(self.인벤토리.목록[인덱스]) == 장갑:
+            if self.장갑 != None:
+                for key, value in self.장갑.추가능력치.items():
+                    if   key=='STR': self.추가STR -= value
+                    elif key=='DEX': self.추가DEX -= value
+                    elif key=='INT': self.추가INT -= value
+                    elif key=='CON': self.추가CON -= value
+                    elif key=='LUK': self.추가LUK -= value
+                for key, value in self.인벤토리.목록[인덱스].추가능력치.items():
+                    if   key=='STR': self.추가STR += value
+                    elif key=='DEX': self.추가DEX += value
+                    elif key=='INT': self.추가INT += value
+                    elif key=='CON': self.추가CON += value
+                    elif key=='LUK': self.추가LUK += value
+                임시장갑 = self.장갑
+                self.장갑 = self.인벤토리.목록[인덱스]
+                self.인벤토리.추가_인덱스(임시장갑, 인덱스)
+            else:
+                for key, value in self.인벤토리.목록[인덱스].추가능력치.items():
+                    if   key=='STR': self.추가STR += value
+                    elif key=='DEX': self.추가DEX += value
+                    elif key=='INT': self.추가INT += value
+                    elif key=='CON': self.추가CON += value
+                    elif key=='LUK': self.추가LUK += value
+                self.장갑 = self.인벤토리.목록[인덱스]
+                self.인벤토리.목록[인덱스] = None
+                self.인벤토리.모두출력()
+        elif type(self.인벤토리.목록[인덱스]) == 신발:
+            if self.신발 != None:
+                for key, value in self.신발.추가능력치.items():
+                    if   key=='STR': self.추가STR -= value
+                    elif key=='DEX': self.추가DEX -= value
+                    elif key=='INT': self.추가INT -= value
+                    elif key=='CON': self.추가CON -= value
+                    elif key=='LUK': self.추가LUK -= value
+                for key, value in self.인벤토리.목록[인덱스].추가능력치.items():
+                    if   key=='STR': self.추가STR += value
+                    elif key=='DEX': self.추가DEX += value
+                    elif key=='INT': self.추가INT += value
+                    elif key=='CON': self.추가CON += value
+                    elif key=='LUK': self.추가LUK += value
+                임시신발 = self.신발
+                self.신발 = self.인벤토리.목록[인덱스]
+                self.인벤토리.추가_인덱스(임시신발, 인덱스)
+            else:
+                for key, value in self.인벤토리.목록[인덱스].추가능력치.items():
+                    if   key=='STR': self.추가STR += value
+                    elif key=='DEX': self.추가DEX += value
+                    elif key=='INT': self.추가INT += value
+                    elif key=='CON': self.추가CON += value
+                    elif key=='LUK': self.추가LUK += value
+                self.신발 = self.인벤토리.목록[인덱스]
+                self.인벤토리.목록[인덱스] = None
+        elif type(self.인벤토리.목록[인덱스]) == 코어:
+            if self.코어 != None:
+                for key, value in self.코어.추가능력치.items():
+                    if   key=='STR': self.추가STR -= value
+                    elif key=='DEX': self.추가DEX -= value
+                    elif key=='INT': self.추가INT -= value
+                    elif key=='CON': self.추가CON -= value
+                    elif key=='LUK': self.추가LUK -= value
+                for key, value in self.인벤토리.목록[인덱스].추가능력치.items():
+                    if   key=='STR': self.추가STR += value
+                    elif key=='DEX': self.추가DEX += value
+                    elif key=='INT': self.추가INT += value
+                    elif key=='CON': self.추가CON += value
+                    elif key=='LUK': self.추가LUK += value
+                임시코어 = self.코어
+                self.코어 = self.인벤토리.목록[인덱스]
+                self.인벤토리.추가_인덱스(임시코어, 인덱스)
+            else:
+                for key, value in self.인벤토리.목록[인덱스].추가능력치.items():
+                    if   key=='STR': self.추가STR += value
+                    elif key=='DEX': self.추가DEX += value
+                    elif key=='INT': self.추가INT += value
+                    elif key=='CON': self.추가CON += value
+                    elif key=='LUK': self.추가LUK += value
+                self.코어 = self.인벤토리.목록[인덱스]
+                self.인벤토리.목록[인덱스] = None
+        self.능력치세팅()
             
 
     def 해제_무기(self):
@@ -260,18 +400,65 @@ class 캐릭터():
             elif key=='LUK': self.추가LUK -= value
         self.인벤토리.추가(self.무기)
         self.무기 = 무기()
-        self.최종STR = self.STR + self.추가STR
-        self.최종DEX = self.DEX + self.추가DEX
-        self.최종INT = self.INT + self.추가INT
-        self.최종CON = self.CON + self.추가CON
-        self.최종LUK = self.LUK + self.추가LUK
-        self.저장()
+        self.능력치세팅()
+    
+    def 해제_장비(self, 장비유형이름):
+        if 장비유형이름 == '모자':
+            for key, value in self.모자.추가능력치.items():
+                if   key=='STR': self.추가STR -= value
+                elif key=='DEX': self.추가DEX -= value
+                elif key=='INT': self.추가INT -= value
+                elif key=='CON': self.추가CON -= value
+                elif key=='LUK': self.추가LUK -= value
+            self.인벤토리.추가(self.모자)
+            self.모자 = None
+        elif 장비유형이름 == '갑옷':
+            for key, value in self.갑옷.추가능력치.items():
+                if   key=='STR': self.추가STR -= value
+                elif key=='DEX': self.추가DEX -= value
+                elif key=='INT': self.추가INT -= value
+                elif key=='CON': self.추가CON -= value
+                elif key=='LUK': self.추가LUK -= value
+            self.인벤토리.추가(self.갑옷)
+            self.갑옷 = None
+        elif 장비유형이름 == '장갑':
+            for key, value in self.장갑.추가능력치.items():
+                if   key=='STR': self.추가STR -= value
+                elif key=='DEX': self.추가DEX -= value
+                elif key=='INT': self.추가INT -= value
+                elif key=='CON': self.추가CON -= value
+                elif key=='LUK': self.추가LUK -= value
+            self.인벤토리.추가(self.장갑)
+            self.장갑 = None
+        elif 장비유형이름 == '신발':
+            for key, value in self.신발.추가능력치.items():
+                if   key=='STR': self.추가STR -= value
+                elif key=='DEX': self.추가DEX -= value
+                elif key=='INT': self.추가INT -= value
+                elif key=='CON': self.추가CON -= value
+                elif key=='LUK': self.추가LUK -= value
+            self.인벤토리.추가(self.신발)
+            self.신발 = None
+        elif 장비유형이름 == '코어':
+            for key, value in self.코어.추가능력치.items():
+                if   key=='STR': self.추가STR -= value
+                elif key=='DEX': self.추가DEX -= value
+                elif key=='INT': self.추가INT -= value
+                elif key=='CON': self.추가CON -= value
+                elif key=='LUK': self.추가LUK -= value
+            self.인벤토리.추가(self.코어)
+            self.코어 = None
+        self.능력치세팅()
 
     def 출력(self):
         print('==============================')
         print(f'{bcolors.BOLD}{self.이름}{bcolors.ENDC}[{self.직업}] Lv.{self.레벨}')
         self.무기.출력()
+        if self.모자: self.모자.출력()
         if self.갑옷: self.갑옷.출력()
+        if self.장갑: self.장갑.출력()
+        if self.신발: self.신발.출력()
+        if self.코어: self.코어.출력()
         print(f' HP         : {self.HP}(+{self.추가HP})')
         print(f' MP         : {self.MP}(+{self.추가MP})')
         print(f' STR        : {self.STR}(+{self.추가STR})')
@@ -390,6 +577,24 @@ class 캐릭터():
             f.write(f'무기_스킬_{i}_증폭 : {무기스킬.증폭}\n')
             f.write(f'무기_스킬_{i}_최고레벨 : {무기스킬.최고레벨}\n')
 
+        if self.모자:
+            f.write(f'모자_이름 : {self.모자.이름}\n')
+            f.write(f'모자_유형 : {self.모자.유형}\n')
+            f.write(f'모자_등급 : {self.모자.등급}\n')
+            f.write(f'모자_등급이름 : {self.모자.등급이름}\n')
+            f.write(f'모자_강화레벨 : {self.모자.강화레벨}\n')
+            f.write(f'모자_방어력 : {self.모자.방어력}\n')
+            f.write(f'모자_HP : {self.모자.HP}\n')
+            f.write(f'모자_회복 : {self.모자.회복}\n')
+            f.write(f'모자_강화방어력 : {self.모자.강화방어력}\n')
+            f.write(f'모자_강화HP : {self.모자.강화HP}\n')
+            f.write(f'모자_강화회복 : {self.모자.강화회복}\n')
+            f.write(f'모자_최종방어력 : {self.모자.최종방어력}\n')
+            f.write(f'모자_최종HP : {self.모자.최종HP}\n')
+            f.write(f'모자_최종회복 : {self.모자.최종회복}\n')
+            for key, value in self.모자.추가능력치.items():
+                f.write(f'모자_추가능력치_{key} : {value}\n')
+        
         if self.갑옷:
             f.write(f'갑옷_이름 : {self.갑옷.이름}\n')
             f.write(f'갑옷_유형 : {self.갑옷.유형}\n')
@@ -413,6 +618,57 @@ class 캐릭터():
             f.write(f'갑옷_최종회피 : {self.갑옷.최종회피}\n')
             for key, value in self.갑옷.추가능력치.items():
                 f.write(f'갑옷_추가능력치_{key} : {value}\n')
+
+        if self.장갑:
+            f.write(f'장갑_이름 : {self.장갑.이름}\n')
+            f.write(f'장갑_유형 : {self.장갑.유형}\n')
+            f.write(f'장갑_등급 : {self.장갑.등급}\n')
+            f.write(f'장갑_등급이름 : {self.장갑.등급이름}\n')
+            f.write(f'장갑_강화레벨 : {self.장갑.강화레벨}\n')
+            f.write(f'장갑_방어력 : {self.장갑.방어력}\n')
+            f.write(f'장갑_명중 : {self.장갑.명중}\n')
+            f.write(f'장갑_내성 : {self.장갑.내성}\n')
+            f.write(f'장갑_강화방어력 : {self.장갑.강화방어력}\n')
+            f.write(f'장갑_강화명중 : {self.장갑.강화명중}\n')
+            f.write(f'장갑_강화내성 : {self.장갑.강화내성}\n')
+            f.write(f'장갑_최종방어력 : {self.장갑.최종방어력}\n')
+            f.write(f'장갑_최종명중 : {self.장갑.최종명중}\n')
+            f.write(f'장갑_최종내성 : {self.장갑.최종내성}\n')
+            for key, value in self.장갑.추가능력치.items():
+                f.write(f'장갑_추가능력치_{key} : {value}\n')
+
+        if self.신발:
+            f.write(f'신발_이름 : {self.신발.이름}\n')
+            f.write(f'신발_유형 : {self.신발.유형}\n')
+            f.write(f'신발_등급 : {self.신발.등급}\n')
+            f.write(f'신발_등급이름 : {self.신발.등급이름}\n')
+            f.write(f'신발_강화레벨 : {self.신발.강화레벨}\n')
+            f.write(f'신발_방어력 : {self.신발.방어력}\n')
+            f.write(f'신발_회피 : {self.신발.회피}\n')
+            f.write(f'신발_속도 : {self.신발.속도}\n')
+            f.write(f'신발_강화방어력 : {self.신발.강화방어력}\n')
+            f.write(f'신발_강화회피 : {self.신발.강화회피}\n')
+            f.write(f'신발_강화속도 : {self.신발.강화속도}\n')
+            f.write(f'신발_최종방어력 : {self.신발.최종방어력}\n')
+            f.write(f'신발_최종회피 : {self.신발.최종회피}\n')
+            f.write(f'신발_최종속도 : {self.신발.최종속도}\n')
+            for key, value in self.신발.추가능력치.items():
+                f.write(f'신발_추가능력치_{key} : {value}\n')
+
+        if self.코어:
+            f.write(f'코어_이름 : {self.코어.이름}\n')
+            f.write(f'코어_유형 : {self.코어.유형}\n')
+            f.write(f'코어_등급 : {self.코어.등급}\n')
+            f.write(f'코어_등급이름 : {self.코어.등급이름}\n')
+            f.write(f'코어_강화레벨 : {self.코어.강화레벨}\n')
+            f.write(f'코어_치명타 : {self.코어.치명타}\n')
+            f.write(f'코어_치명타증폭 : {self.코어.치명타증폭}\n')
+            f.write(f'코어_강화치명타 : {self.코어.강화치명타}\n')
+            f.write(f'코어_강화치명타증폭 : {self.코어.강화치명타증폭}\n')
+            f.write(f'코어_최종치명타 : {self.코어.최종치명타}\n')
+            f.write(f'코어_최종치명타증폭 : {self.코어.최종치명타증폭}\n')
+            for key, value in self.코어.추가능력치.items():
+                f.write(f'코어_추가능력치_{key} : {value}\n')
 
         for i, 아이템 in enumerate(self.인벤토리.목록):
             if self.인벤토리.목록[i] == None: continue
@@ -445,6 +701,26 @@ class 캐릭터():
                     f.write(f'아이템_{i}_{아이템.유형}_스킬_{j}_지속시간 : {스킬.지속시간}\n')
                     f.write(f'아이템_{i}_{아이템.유형}_스킬_{j}_증폭 : {스킬.증폭}\n')
                     f.write(f'아이템_{i}_{아이템.유형}_스킬_{j}_최고레벨 : {스킬.최고레벨}\n')
+            elif 아이템.유형 == '모자':
+                f.write(f'아이템_{i}_{아이템.유형}_id : {아이템.id}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_이름 : {아이템.이름}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_유형 : {아이템.유형}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_등급 : {아이템.등급}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_등급이름 : {아이템.등급이름}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_강화레벨 : {아이템.강화레벨}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_최고강화레벨 : {아이템.최고강화레벨}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_인벤토리인덱스 : {i}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_방어력 : {아이템.방어력}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_HP : {아이템.HP}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_회복 : {아이템.회복}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_강화방어력 : {아이템.강화방어력}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_강화HP : {아이템.강화HP}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_강화회복 : {아이템.강화회복}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_최종방어력 : {아이템.최종방어력}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_최종HP : {아이템.최종HP}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_최종회복 : {아이템.최종회복}\n')
+                for key, value in 아이템.추가능력치.items():
+                    f.write(f'아이템_{i}_{아이템.유형}_추가능력치_{key} : {value}\n')
             elif 아이템.유형 == '갑옷':
                 f.write(f'아이템_{i}_{아이템.유형}_id : {아이템.id}\n')
                 f.write(f'아이템_{i}_{아이템.유형}_이름 : {아이템.이름}\n')
@@ -469,6 +745,63 @@ class 캐릭터():
                 f.write(f'아이템_{i}_{아이템.유형}_최종내성 : {아이템.최종내성}\n')
                 f.write(f'아이템_{i}_{아이템.유형}_최종명중 : {아이템.최종명중}\n')
                 f.write(f'아이템_{i}_{아이템.유형}_최종회피 : {아이템.최종회피}\n')
+                for key, value in 아이템.추가능력치.items():
+                    f.write(f'아이템_{i}_{아이템.유형}_추가능력치_{key} : {value}\n')
+            elif 아이템.유형 == '장갑':
+                f.write(f'아이템_{i}_{아이템.유형}_id : {아이템.id}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_이름 : {아이템.이름}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_유형 : {아이템.유형}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_등급 : {아이템.등급}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_등급이름 : {아이템.등급이름}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_강화레벨 : {아이템.강화레벨}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_최고강화레벨 : {아이템.최고강화레벨}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_인벤토리인덱스 : {i}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_방어력 : {아이템.방어력}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_명중 : {아이템.명중}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_내성 : {아이템.내성}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_강화방어력 : {아이템.강화방어력}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_강화명중 : {아이템.강화명중}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_강화내성 : {아이템.강화내성}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_최종방어력 : {아이템.최종방어력}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_최종명중 : {아이템.최종명중}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_최종내성 : {아이템.최종내성}\n')
+                for key, value in 아이템.추가능력치.items():
+                    f.write(f'아이템_{i}_{아이템.유형}_추가능력치_{key} : {value}\n')
+            elif 아이템.유형 == '신발':
+                f.write(f'아이템_{i}_{아이템.유형}_id : {아이템.id}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_이름 : {아이템.이름}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_유형 : {아이템.유형}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_등급 : {아이템.등급}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_등급이름 : {아이템.등급이름}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_강화레벨 : {아이템.강화레벨}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_최고강화레벨 : {아이템.최고강화레벨}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_인벤토리인덱스 : {i}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_방어력 : {아이템.방어력}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_회피 : {아이템.회피}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_속도 : {아이템.속도}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_강화방어력 : {아이템.강화방어력}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_강화회피 : {아이템.강화회피}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_강화속도 : {아이템.강화속도}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_최종방어력 : {아이템.최종방어력}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_최종회피 : {아이템.최종회피}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_최종속도 : {아이템.최종속도}\n')
+                for key, value in 아이템.추가능력치.items():
+                    f.write(f'아이템_{i}_{아이템.유형}_추가능력치_{key} : {value}\n')
+            elif 아이템.유형 == '장갑':
+                f.write(f'아이템_{i}_{아이템.유형}_id : {아이템.id}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_이름 : {아이템.이름}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_유형 : {아이템.유형}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_등급 : {아이템.등급}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_등급이름 : {아이템.등급이름}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_강화레벨 : {아이템.강화레벨}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_최고강화레벨 : {아이템.최고강화레벨}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_인벤토리인덱스 : {i}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_치명타 : {아이템.치명타}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_치명타증폭 : {아이템.치명타증폭}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_강화치명타 : {아이템.강화치명타}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_강화치명타증폭 : {아이템.강화치명타증폭}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_최종치명타 : {아이템.최종치명타}\n')
+                f.write(f'아이템_{i}_{아이템.유형}_최종치명타증폭 : {아이템.최종치명타증폭}\n')
                 for key, value in 아이템.추가능력치.items():
                     f.write(f'아이템_{i}_{아이템.유형}_추가능력치_{key} : {value}\n')
             elif type(아이템) == 소비:
@@ -502,9 +835,17 @@ class 캐릭터():
 
         장착장비세트 = set()
         for key_list, value in 캐릭터정보리스트:
-            if key_list[0] == '갑옷': 장착장비세트.add('갑옷')
+            if   key_list[0] == '모자': 장착장비세트.add('모자')
+            elif key_list[0] == '갑옷': 장착장비세트.add('갑옷')
+            elif key_list[0] == '장갑': 장착장비세트.add('장갑')
+            elif key_list[0] == '신발': 장착장비세트.add('신발')
+            elif key_list[0] == '코어': 장착장비세트.add('코어')
         for 장착장비 in 장착장비세트:
-            if 장착장비=='갑옷': self.갑옷 = 갑옷('임시갑옷')
+            if   장착장비=='모자': self.모자 = 모자('임시모자')
+            elif 장착장비=='갑옷': self.갑옷 = 갑옷('임시갑옷')
+            elif 장착장비=='장갑': self.장갑 = 장갑('임시장갑')
+            elif 장착장비=='신발': self.신발 = 신발('임시신발')
+            elif 장착장비=='코어': self.코어 = 코어('임시코어')
 
         for key_list, value in 캐릭터정보리스트:
             if len(key_list) == 1:
@@ -590,6 +931,27 @@ class 캐릭터():
                             무기스킬딕셔너리[key_list[2]] = {key_list[3]: value}
                         else:
                             무기스킬딕셔너리[key_list[2]][key_list[3]] = value
+                elif key_list[0] == '모자':
+                    if   key_list[1] == '이름': self.모자.이름 = value
+                    elif key_list[1] == '등급': self.모자.등급 = int(value)
+                    elif key_list[1] == '등급이름': self.모자.등급이름 = value
+                    elif key_list[1] == '강화레벨': self.모자.강화레벨 = int(value)
+                    elif key_list[1] == '최고강화레벨': self.모자.최고강화레벨 = int(value)
+                    elif key_list[1] == '방어력': self.모자.방어력 = int(value)
+                    elif key_list[1] == 'HP': self.모자.HP = int(value)
+                    elif key_list[1] == '회복': self.모자.회복 = int(value)
+                    elif key_list[1] == '강화방어력': self.모자.강화방어력 = int(value)
+                    elif key_list[1] == '강화HP': self.모자.강화HP = int(value)
+                    elif key_list[1] == '강화회복': self.모자.강화회복 = int(value)
+                    elif key_list[1] == '최종방어력': self.모자.최종방어력 = int(value)
+                    elif key_list[1] == '최종HP': self.모자.최종HP = int(value)
+                    elif key_list[1] == '최종회복': self.모자.최종회복 = int(value)
+                    elif key_list[1] == '추가능력치':
+                        if   key_list[2] == 'STR': self.모자.추가능력치['STR'] = int(value)
+                        elif key_list[2] == 'DEX': self.모자.추가능력치['DEX'] = int(value)
+                        elif key_list[2] == 'INT': self.모자.추가능력치['INT'] = int(value)
+                        elif key_list[2] == 'CON': self.모자.추가능력치['CON'] = int(value)
+                        elif key_list[2] == 'LUK': self.모자.추가능력치['LUK'] = int(value)
                 elif key_list[0] == '갑옷':
                     if   key_list[1] == '이름': self.갑옷.이름 = value
                     elif key_list[1] == '등급': self.갑옷.등급 = int(value)
@@ -617,6 +979,66 @@ class 캐릭터():
                         elif key_list[2] == 'INT': self.갑옷.추가능력치['INT'] = int(value)
                         elif key_list[2] == 'CON': self.갑옷.추가능력치['CON'] = int(value)
                         elif key_list[2] == 'LUK': self.갑옷.추가능력치['LUK'] = int(value)
+                elif key_list[0] == '장갑':
+                    if   key_list[1] == '이름': self.장갑.이름 = value
+                    elif key_list[1] == '등급': self.장갑.등급 = int(value)
+                    elif key_list[1] == '등급이름': self.장갑.등급이름 = value
+                    elif key_list[1] == '강화레벨': self.장갑.강화레벨 = int(value)
+                    elif key_list[1] == '최고강화레벨': self.장갑.최고강화레벨 = int(value)
+                    elif key_list[1] == '방어력': self.장갑.방어력 = int(value)
+                    elif key_list[1] == '명중': self.장갑.명중 = int(value)
+                    elif key_list[1] == '내성': self.장갑.내성 = float(value)
+                    elif key_list[1] == '강화방어력': self.장갑.강화방어력 = int(value)
+                    elif key_list[1] == '강화명중': self.장갑.강화명중 = int(value)
+                    elif key_list[1] == '강화내성': self.장갑.강화내성 = float(value)
+                    elif key_list[1] == '최종방어력': self.장갑.최종방어력 = int(value)
+                    elif key_list[1] == '최종명중': self.장갑.최종명중 = int(value)
+                    elif key_list[1] == '최종내성': self.장갑.최종내성 = float(value)
+                    elif key_list[1] == '추가능력치':
+                        if   key_list[2] == 'STR': self.장갑.추가능력치['STR'] = int(value)
+                        elif key_list[2] == 'DEX': self.장갑.추가능력치['DEX'] = int(value)
+                        elif key_list[2] == 'INT': self.장갑.추가능력치['INT'] = int(value)
+                        elif key_list[2] == 'CON': self.장갑.추가능력치['CON'] = int(value)
+                        elif key_list[2] == 'LUK': self.장갑.추가능력치['LUK'] = int(value)
+                elif key_list[0] == '신발':
+                    if   key_list[1] == '이름': self.신발.이름 = value
+                    elif key_list[1] == '등급': self.신발.등급 = int(value)
+                    elif key_list[1] == '등급이름': self.신발.등급이름 = value
+                    elif key_list[1] == '강화레벨': self.신발.강화레벨 = int(value)
+                    elif key_list[1] == '최고강화레벨': self.신발.최고강화레벨 = int(value)
+                    elif key_list[1] == '방어력': self.신발.방어력 = int(value)
+                    elif key_list[1] == '회피': self.신발.회피 = float(value)
+                    elif key_list[1] == '속도': self.신발.속도 = int(value)
+                    elif key_list[1] == '강화방어력': self.신발.강화방어력 = int(value)
+                    elif key_list[1] == '강화회피': self.신발.강화회피 = float(value)
+                    elif key_list[1] == '강화속도': self.신발.강화속도 = int(value)
+                    elif key_list[1] == '최종방어력': self.신발.최종방어력 = int(value)
+                    elif key_list[1] == '최종회피': self.신발.최종회피 = float(value)
+                    elif key_list[1] == '최종속도': self.신발.최종속도 = int(value)
+                    elif key_list[1] == '추가능력치':
+                        if   key_list[2] == 'STR': self.신발.추가능력치['STR'] = int(value)
+                        elif key_list[2] == 'DEX': self.신발.추가능력치['DEX'] = int(value)
+                        elif key_list[2] == 'INT': self.신발.추가능력치['INT'] = int(value)
+                        elif key_list[2] == 'CON': self.신발.추가능력치['CON'] = int(value)
+                        elif key_list[2] == 'LUK': self.신발.추가능력치['LUK'] = int(value)
+                elif key_list[0] == '코어':
+                    if   key_list[1] == '이름': self.코어.이름 = value
+                    elif key_list[1] == '등급': self.코어.등급 = int(value)
+                    elif key_list[1] == '등급이름': self.코어.등급이름 = value
+                    elif key_list[1] == '강화레벨': self.코어.강화레벨 = int(value)
+                    elif key_list[1] == '최고강화레벨': self.코어.최고강화레벨 = int(value)
+                    elif key_list[1] == '치명타': self.코어.치명타 = float(value)
+                    elif key_list[1] == '치명타증폭': self.코어.치명타증폭 = float(value)
+                    elif key_list[1] == '강화치명타': self.코어.강화치명타 = float(value)
+                    elif key_list[1] == '강화치명타증폭': self.코어.강화치명타증폭 = float(value)
+                    elif key_list[1] == '최종치명타': self.코어.최종치명타 = float(value)
+                    elif key_list[1] == '최종치명타증폭': self.코어.최종치명타증폭 = float(value)
+                    elif key_list[1] == '추가능력치':
+                        if   key_list[2] == 'STR': self.코어.추가능력치['STR'] = int(value)
+                        elif key_list[2] == 'DEX': self.코어.추가능력치['DEX'] = int(value)
+                        elif key_list[2] == 'INT': self.코어.추가능력치['INT'] = int(value)
+                        elif key_list[2] == 'CON': self.코어.추가능력치['CON'] = int(value)
+                        elif key_list[2] == 'LUK': self.코어.추가능력치['LUK'] = int(value)
                 elif key_list[0] == '스킬':
                     if key_list[1] not in 스킬딕셔너리:
                         스킬딕셔너리[key_list[1]] = {key_list[2]: value}
@@ -729,6 +1151,34 @@ class 캐릭터():
                 if 임시무기.이름 != '임시무기' and 인벤토리인덱스 != -1:
                     self.인벤토리.추가_인덱스(임시무기, 인벤토리인덱스)
 
+            elif 아이템딕셔너리[key1]['유형'] == '모자':
+                임시모자 = 모자('임시모자')
+                for key2, value in 아이템딕셔너리[key1].items():
+                    if   key2 == 'id': 임시모자.id = value
+                    elif key2 == '이름': 임시모자.이름 = value
+                    elif key2 == '등급': 임시모자.등급 = int(value)
+                    elif key2 == '등급이름': 임시모자.등급이름 = value
+                    elif key2 == '인벤토리인덱스': 인벤토리인덱스 = int(value)
+                    elif key2 == '유형': 임시모자.유형 = value
+                    elif key2 == '강화레벨': 임시모자.강화레벨 = int(value)
+                    elif key2 == '최고강화레벨': 임시모자.최고강화레벨 = int(value)
+                    elif key2 == '방어력': 임시모자.방어력 = int(value)
+                    elif key2 == 'HP': 임시모자.HP = int(value)
+                    elif key2 == '회복': 임시모자.회복 = int(value)
+                    elif key2 == '강화방어력': 임시모자.강화방어력 = int(value)
+                    elif key2 == '강화HP': 임시모자.강화HP = int(value)
+                    elif key2 == '강화회복': 임시모자.강화회복 = int(value)
+                    elif key2 == '최종방어력': 임시모자.최종방어력 = int(value)
+                    elif key2 == '최종HP': 임시모자.최종HP = int(value)
+                    elif key2 == '최종회복': 임시모자.최종회복 = int(value)
+                    elif key2 == '추가능력치':
+                        for key3, value2 in value.items():
+                            if   key3 == 'STR': 임시모자.추가능력치['STR'] = int(value2)
+                            elif key3 == 'DEX': 임시모자.추가능력치['DEX'] = int(value2)
+                            elif key3 == 'INT': 임시모자.추가능력치['INT'] = int(value2)
+                            elif key3 == 'CON': 임시모자.추가능력치['CON'] = int(value2)
+                            elif key3 == 'LUK': 임시모자.추가능력치['LUK'] = int(value2)
+
             elif 아이템딕셔너리[key1]['유형'] == '갑옷':
                 임시갑옷 = 갑옷('임시갑옷')
                 for key2, value in 아이템딕셔너리[key1].items():
@@ -763,6 +1213,87 @@ class 캐릭터():
                             elif key3 == 'CON': 임시갑옷.추가능력치['CON'] = int(value2)
                             elif key3 == 'LUK': 임시갑옷.추가능력치['LUK'] = int(value2)
 
+            elif 아이템딕셔너리[key1]['유형'] == '장갑':
+                임시장갑 = 장갑('임시장갑')
+                for key2, value in 아이템딕셔너리[key1].items():
+                    if   key2 == 'id': 임시장갑.id = value
+                    elif key2 == '이름': 임시장갑.이름 = value
+                    elif key2 == '등급': 임시장갑.등급 = int(value)
+                    elif key2 == '등급이름': 임시장갑.등급이름 = value
+                    elif key2 == '인벤토리인덱스': 인벤토리인덱스 = int(value)
+                    elif key2 == '유형': 임시장갑.유형 = value
+                    elif key2 == '강화레벨': 임시장갑.강화레벨 = int(value)
+                    elif key2 == '최고강화레벨': 임시장갑.최고강화레벨 = int(value)
+                    elif key2 == '방어력': 임시장갑.방어력 = int(value)
+                    elif key2 == '내성': 임시장갑.내성 = float(value)
+                    elif key2 == '명중': 임시장갑.명중 = int(value)
+                    elif key2 == '강화방어력': 임시장갑.강화방어력 = int(value)
+                    elif key2 == '강화내성': 임시장갑.강화내성 = float(value)
+                    elif key2 == '강화명중': 임시장갑.강화명중 = int(value)
+                    elif key2 == '최종방어력': 임시장갑.최종방어력 = int(value)
+                    elif key2 == '최종내성': 임시장갑.최종내성 = float(value)
+                    elif key2 == '최종명중': 임시장갑.최종명중 = int(value)
+                    elif key2 == '추가능력치':
+                        for key3, value2 in value.items():
+                            if   key3 == 'STR': 임시모자.추가능력치['STR'] = int(value2)
+                            elif key3 == 'DEX': 임시모자.추가능력치['DEX'] = int(value2)
+                            elif key3 == 'INT': 임시모자.추가능력치['INT'] = int(value2)
+                            elif key3 == 'CON': 임시모자.추가능력치['CON'] = int(value2)
+                            elif key3 == 'LUK': 임시모자.추가능력치['LUK'] = int(value2)
+
+            elif 아이템딕셔너리[key1]['유형'] == '신발':
+                임시신발 = 신발('임시신발')
+                for key2, value in 아이템딕셔너리[key1].items():
+                    if   key2 == 'id': 임시신발.id = value
+                    elif key2 == '이름': 임시신발.이름 = value
+                    elif key2 == '등급': 임시신발.등급 = int(value)
+                    elif key2 == '등급이름': 임시신발.등급이름 = value
+                    elif key2 == '인벤토리인덱스': 인벤토리인덱스 = int(value)
+                    elif key2 == '유형': 임시신발.유형 = value
+                    elif key2 == '강화레벨': 임시신발.강화레벨 = int(value)
+                    elif key2 == '최고강화레벨': 임시신발.최고강화레벨 = int(value)
+                    elif key2 == '방어력': 임시신발.방어력 = int(value)
+                    elif key2 == '회피': 임시신발.회피 = float(value)
+                    elif key2 == '속도': 임시신발.속도 = int(value)
+                    elif key2 == '강화방어력': 임시신발.강화방어력 = int(value)
+                    elif key2 == '강화회피': 임시신발.강화회피 = float(value)
+                    elif key2 == '강화속도': 임시신발.강화속도 = int(value)
+                    elif key2 == '최종방어력': 임시신발.최종방어력 = int(value)
+                    elif key2 == '최종회피': 임시신발.최종회피 = float(value)
+                    elif key2 == '최종속도': 임시신발.최종속도 = int(value)
+                    elif key2 == '추가능력치':
+                        for key3, value2 in value.items():
+                            if   key3 == 'STR': 임시모자.추가능력치['STR'] = int(value2)
+                            elif key3 == 'DEX': 임시모자.추가능력치['DEX'] = int(value2)
+                            elif key3 == 'INT': 임시모자.추가능력치['INT'] = int(value2)
+                            elif key3 == 'CON': 임시모자.추가능력치['CON'] = int(value2)
+                            elif key3 == 'LUK': 임시모자.추가능력치['LUK'] = int(value2)
+
+            elif 아이템딕셔너리[key1]['유형'] == '코어':
+                임시코어 = 코어('임시코어')
+                for key2, value in 아이템딕셔너리[key1].items():
+                    if   key2 == 'id': 임시코어.id = value
+                    elif key2 == '이름': 임시코어.이름 = value
+                    elif key2 == '등급': 임시코어.등급 = int(value)
+                    elif key2 == '등급이름': 임시코어.등급이름 = value
+                    elif key2 == '인벤토리인덱스': 인벤토리인덱스 = int(value)
+                    elif key2 == '유형': 임시코어.유형 = value
+                    elif key2 == '강화레벨': 임시코어.강화레벨 = int(value)
+                    elif key2 == '최고강화레벨': 임시코어.최고강화레벨 = int(value)
+                    elif key2 == '치명타': 임시코어.치명타 = float(value)
+                    elif key2 == '치명타증폭': 임시코어.치명타증폭 = float(value)
+                    elif key2 == '강화치명타': 임시코어.강화치명타 = float(value)
+                    elif key2 == '강화치명타증폭': 임시코어.강화치명타증폭 = float(value)
+                    elif key2 == '최종치명타': 임시코어.최종치명타 = float(value)
+                    elif key2 == '최종치명타증폭': 임시코어.최종치명타증폭 = float(value)
+                    elif key2 == '추가능력치':
+                        for key3, value2 in value.items():
+                            if   key3 == 'STR': 임시모자.추가능력치['STR'] = int(value2)
+                            elif key3 == 'DEX': 임시모자.추가능력치['DEX'] = int(value2)
+                            elif key3 == 'INT': 임시모자.추가능력치['INT'] = int(value2)
+                            elif key3 == 'CON': 임시모자.추가능력치['CON'] = int(value2)
+                            elif key3 == 'LUK': 임시모자.추가능력치['LUK'] = int(value2)
+
             elif 아이템딕셔너리[key1]['유형'] == '주문서':
                 임시소비 = 소비('임시소비', '주문서')
                 for key2, value in 아이템딕셔너리[key1].items():
@@ -786,21 +1317,28 @@ class 캐릭터():
         if not 인벤토리아이템:
             인벤토리인덱스 = self.인벤토리.추가(아이템, 개수)
         else:
-            if 아이템.유형 == '무기' or 아이템.유형 == '갑옷':
+            if 아이템.유형 == '무기' or \
+               아이템.유형 == '모자' or \
+               아이템.유형 == '갑옷' or \
+               아이템.유형 == '장갑' or \
+               아이템.유형 == '신발' or \
+               아이템.유형 == '코어':
                 인벤토리인덱스 = self.인벤토리.추가(아이템)
             elif type(아이템) == 소비:
                 self.인벤토리.목록[인벤토리인덱스].개수 += 개수
                 self.인벤토리.모두출력()
 
-        self.저장()
         return 인벤토리인덱스
 
     def 아이템판매(self, 인벤토리인덱스, 개수=1):
         if self.인벤토리.목록[인벤토리인덱스] != None:
             인벤토리아이템 = self.인벤토리.목록[인벤토리인덱스]
-            if 인벤토리아이템.유형 == '무기':
-                self.인벤토리.제거(인벤토리인덱스)
-            elif 인벤토리아이템.유형 == '갑옷':
+            if 인벤토리아이템.유형 == '무기' or \
+               인벤토리아이템.유형 == '모자' or \
+               인벤토리아이템.유형 == '갑옷' or \
+               인벤토리아이템.유형 == '장갑' or \
+               인벤토리아이템.유형 == '신발' or \
+               인벤토리아이템.유형 == '코어':
                 self.인벤토리.제거(인벤토리인덱스)
             elif type(인벤토리아이템) == 소비:
                 if 인벤토리아이템.개수 > 개수:
