@@ -11,14 +11,34 @@ from .Skill       import 스킬
 from .Inventory   import 인벤토리
 from .Consumption import 소비
 
-class 캐릭터():
-    def __init__(self, 이름='임시캐릭터'):
-        # 스텟
+class 초기능력치():
+    def __init__(self):
         self.STR            = 5
         self.DEX            = 5
         self.INT            = 5
         self.CON            = 5
         self.LUK            = 5
+        self.공격력         = 100
+        self.HP             = 2000
+        self.MP             = 100
+        self.명중           = 10
+        self.회피           = 0.1
+        self.치명타         = 0.2
+        self.치명타증폭     = 1.25
+        self.방어력         = 50
+        self.내성           = 0.0
+        self.회복           = 5
+        self.속도           = 1000
+        self.필요경험치     = 2000
+
+class 캐릭터():
+    def __init__(self, 이름='임시캐릭터', 초기능력치=초기능력치()):
+        # 스텟
+        self.STR            = 초기능력치.STR
+        self.DEX            = 초기능력치.DEX
+        self.INT            = 초기능력치.INT
+        self.CON            = 초기능력치.CON
+        self.LUK            = 초기능력치.LUK
         self.추가STR        = 0
         self.추가DEX        = 0
         self.추가INT        = 0
@@ -33,17 +53,17 @@ class 캐릭터():
         self.이름           = 이름
         self.레벨           = 1
         self.직업           = '초보자'
-        self.공격력         = 100
-        self.HP             = 2000
-        self.MP             = 100
-        self.명중           = 10
-        self.회피           = 0.1
-        self.치명타         = 0.2
-        self.치명타증폭     = 1.25
-        self.방어력         = 50
-        self.내성           = 0.0
-        self.회복           = 5
-        self.속도           = 1000
+        self.공격력         = 초기능력치.공격력
+        self.HP             = 초기능력치.HP
+        self.MP             = 초기능력치.MP
+        self.명중           = 초기능력치.명중
+        self.회피           = 초기능력치.회피
+        self.치명타         = 초기능력치.치명타
+        self.치명타증폭     = 초기능력치.치명타증폭
+        self.방어력         = 초기능력치.방어력
+        self.내성           = 초기능력치.내성
+        self.회복           = 초기능력치.회복
+        self.속도           = 초기능력치.속도
         self.추가공격력     = 0
         self.추가HP         = 0
         self.추가MP         = 0
@@ -55,19 +75,19 @@ class 캐릭터():
         self.추가내성       = 0.0
         self.추가회복       = 0
         self.추가속도       = 0
-        self.최종공격력     = 100
-        self.최종HP         = 2000
-        self.최종MP         = 100
-        self.최종명중       = 10
-        self.최종회피       = 0.1
-        self.최종치명타     = 0.2
-        self.최종치명타증폭 = 1.25
-        self.최종방어력     = 50
-        self.최종내성       = 0.0
-        self.최종회복       = 5
-        self.최종속도       = 1000
+        self.최종공격력     = 초기능력치.공격력
+        self.최종HP         = 초기능력치.HP
+        self.최종MP         = 초기능력치.MP
+        self.최종명중       = 초기능력치.명중
+        self.최종회피       = 초기능력치.회피
+        self.최종치명타     = 초기능력치.치명타
+        self.최종치명타증폭 = 초기능력치.치명타증폭
+        self.최종방어력     = 초기능력치.방어력
+        self.최종내성       = 초기능력치.내성
+        self.최종회복       = 초기능력치.회복
+        self.최종속도       = 초기능력치.속도
         self.경험치         = 0
-        self.필요경험치     = 2000
+        self.필요경험치     = 초기능력치.필요경험치
         self.코인           = 0
         self.인벤토리       = 인벤토리(self.이름)
         # 장비
@@ -80,19 +100,20 @@ class 캐릭터():
         # 스킬
         self.스킬리스트     = []
 
-    def 처음생성(self):
+    def 처음생성(self, 초기능력치=초기능력치()):
         self.스킬리스트.append(스킬())  # 강타
+        self.능력치세팅(초기능력치)
 
-    def 능력치세팅(self):
+    def 능력치세팅(self, 초기능력치=초기능력치()):
         # 기본능력치
-        self.공격력     = 100  + self.STR * 1
-        self.치명타     = 0.2  + self.DEX * 0.002
-        self.명중       = 10   + self.DEX * 2
-        self.회복       = 5    + self.INT * 3
-        self.방어력     = 50   + self.CON * 2
-        self.HP         = 2000 + self.CON * 15
-        self.회피       = 0.1  + self.LUK * 0.001
-        self.치명타증폭 = 1.25 + self.LUK * 0.01
+        self.공격력     = 초기능력치.공격력     + self.STR * 1
+        self.치명타     = 초기능력치.치명타     + self.DEX * 0.002
+        self.명중       = 초기능력치.명중       + self.DEX * 2
+        self.회복       = 초기능력치.회복       + self.INT * 3
+        self.방어력     = 초기능력치.방어력     + self.CON * 2
+        self.HP         = 초기능력치.HP         + self.CON * 15
+        self.회피       = 초기능력치.회피       + self.LUK * 0.001
+        self.치명타증폭 = 초기능력치.치명타증폭 + self.LUK * 0.01
         # 추가능력치
         self.추가STR        = 0
         self.추가DEX        = 0
@@ -210,7 +231,7 @@ class 캐릭터():
         최종피해 /= 1-self.내성
         return int(최종피해), 회피성공
     
-    def 레벨업(self):
+    def 레벨업(self, 초기능력치=초기능력치()):
         self.레벨   += 1
         self.공격력 += 1
         self.HP     += 2
@@ -236,9 +257,9 @@ class 캐릭터():
                 elif i==2: self.INT += random.randint(0, 1)
                 elif i==3: self.CON += random.randint(0, 1)
                 elif i==4: self.LUK += random.randint(2, 3)
-        self.능력치세팅()
+        self.능력치세팅(초기능력치)
 
-    def 장착_장비(self, 인덱스):
+    def 장착_장비(self, 인덱스, 초기능력치=초기능력치()):
         if type(self.인벤토리.목록[인덱스]) == 무기:
             for key, value in self.무기.추가능력치.items():
                 if   key=='STR': self.추가STR -= value
@@ -387,10 +408,10 @@ class 캐릭터():
                     elif key=='LUK': self.추가LUK += value
                 self.코어 = self.인벤토리.목록[인덱스]
                 self.인벤토리.목록[인덱스] = None
-        self.능력치세팅()
+        self.능력치세팅(초기능력치)
             
 
-    def 해제_무기(self):
+    def 해제_무기(self, 초기능력치=초기능력치()):
         if self.무기.이름 == '주먹': return
         for key, value in self.무기.추가능력치.items():
             if   key=='STR': self.추가STR -= value
@@ -400,7 +421,7 @@ class 캐릭터():
             elif key=='LUK': self.추가LUK -= value
         self.인벤토리.추가(self.무기)
         self.무기 = 무기()
-        self.능력치세팅()
+        self.능력치세팅(초기능력치)
     
     def 해제_장비(self, 장비유형이름):
         if 장비유형이름 == '모자':
@@ -448,7 +469,7 @@ class 캐릭터():
                 elif key=='LUK': self.추가LUK -= value
             self.인벤토리.추가(self.코어)
             self.코어 = None
-        self.능력치세팅()
+        self.능력치세팅(초기능력치)
 
     def 출력(self):
         print('==============================')
