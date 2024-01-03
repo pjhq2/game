@@ -13,19 +13,19 @@ from .Consumption import 소비
 
 class 초기능력치():
     def __init__(self):
+        self.HP             = 2000
+        self.MP             = 100
         self.STR            = 5
         self.DEX            = 5
         self.INT            = 5
         self.CON            = 5
         self.LUK            = 5
         self.공격력         = 100
-        self.HP             = 2000
-        self.MP             = 100
+        self.방어력         = 50
         self.명중           = 10
         self.회피           = 0.1
         self.치명타         = 0.2
         self.치명타증폭     = 1.25
-        self.방어력         = 50
         self.내성           = 0.0
         self.회복           = 5
         self.속도           = 1000
@@ -53,36 +53,36 @@ class 캐릭터():
         self.이름           = 이름
         self.레벨           = 1
         self.직업           = '초보자'
-        self.공격력         = 초기능력치.공격력
         self.HP             = 초기능력치.HP
         self.MP             = 초기능력치.MP
+        self.공격력         = 초기능력치.공격력
+        self.방어력         = 초기능력치.방어력
         self.명중           = 초기능력치.명중
         self.회피           = 초기능력치.회피
         self.치명타         = 초기능력치.치명타
         self.치명타증폭     = 초기능력치.치명타증폭
-        self.방어력         = 초기능력치.방어력
         self.내성           = 초기능력치.내성
         self.회복           = 초기능력치.회복
         self.속도           = 초기능력치.속도
-        self.추가공격력     = 0
         self.추가HP         = 0
         self.추가MP         = 0
+        self.추가공격력     = 0
+        self.추가방어력     = 0
         self.추가명중       = 0
         self.추가회피       = 0.0
         self.추가치명타     = 0.0
         self.추가치명타증폭 = 0.0
-        self.추가방어력     = 0
         self.추가내성       = 0.0
         self.추가회복       = 0
         self.추가속도       = 0
-        self.최종공격력     = 초기능력치.공격력
         self.최종HP         = 초기능력치.HP
         self.최종MP         = 초기능력치.MP
+        self.최종공격력     = 초기능력치.공격력
+        self.최종방어력     = 초기능력치.방어력
         self.최종명중       = 초기능력치.명중
         self.최종회피       = 초기능력치.회피
         self.최종치명타     = 초기능력치.치명타
         self.최종치명타증폭 = 초기능력치.치명타증폭
-        self.최종방어력     = 초기능력치.방어력
         self.최종내성       = 초기능력치.내성
         self.최종회복       = 초기능력치.회복
         self.최종속도       = 초기능력치.속도
@@ -106,28 +106,28 @@ class 캐릭터():
 
     def 능력치세팅(self, 초기능력치=초기능력치()):
         # 기본능력치
-        self.공격력     = 초기능력치.공격력     + self.STR * 1
-        self.치명타     = 초기능력치.치명타     + self.DEX * 0.002
-        self.명중       = 초기능력치.명중       + self.DEX * 2
-        self.회복       = 초기능력치.회복       + self.INT * 3
-        self.방어력     = 초기능력치.방어력     + self.CON * 2
         self.HP         = 초기능력치.HP         + self.CON * 15
+        self.공격력     = 초기능력치.공격력     + self.STR * 1
+        self.방어력     = 초기능력치.방어력     + self.CON * 2
+        self.명중       = 초기능력치.명중       + self.DEX * 2
         self.회피       = 초기능력치.회피       + self.LUK * 0.001
+        self.치명타     = 초기능력치.치명타     + self.DEX * 0.002
         self.치명타증폭 = 초기능력치.치명타증폭 + self.LUK * 0.01
+        self.회복       = 초기능력치.회복       + self.INT * 3
         # 추가능력치
         self.추가STR        = 0
         self.추가DEX        = 0
         self.추가INT        = 0
         self.추가CON        = 0
         self.추가LUK        = 0
-        self.추가공격력     = 0
         self.추가HP         = 0
         self.추가MP         = 0
+        self.추가공격력     = 0
+        self.추가방어력     = 0
         self.추가명중       = 0
         self.추가회피       = 0.0
         self.추가치명타     = 0.0
         self.추가치명타증폭 = 0.0
-        self.추가방어력     = 0
         self.추가내성       = 0.0
         self.추가회복       = 0
         self.추가속도       = 0
@@ -189,28 +189,31 @@ class 캐릭터():
                 elif key == 'INT': self.추가INT += value
                 elif key == 'CON': self.추가CON += value
                 elif key == 'LUK': self.추가LUK += value
-        self.추가공격력     += self.추가STR * 1
-        self.추가치명타     += self.추가DEX * 0.002
-        self.추가명중       += self.추가DEX * 2
-        self.추가회복       += self.추가INT * 3
-        self.추가방어력     += self.추가CON * 2
         self.추가HP         += self.추가CON * 15
+        self.추가공격력     += self.추가STR * 1
+        self.추가방어력     += self.추가CON * 2
+        self.추가명중       += self.추가DEX * 2
         self.추가회피       += self.추가LUK * 0.001
+        self.추가치명타     += self.추가DEX * 0.002
         self.추가치명타증폭 += self.추가LUK * 0.01
+        self.추가회복       += self.추가INT * 3
         # 최종능력치
         self.최종STR        = self.STR        + self.추가STR
         self.최종DEX        = self.DEX        + self.추가DEX
         self.최종INT        = self.INT        + self.추가INT
         self.최종CON        = self.CON        + self.추가CON
         self.최종LUK        = self.LUK        + self.추가LUK
-        self.최종공격력     = self.공격력     + self.추가공격력
-        self.최종치명타     = self.치명타     + self.추가치명타
-        self.최종명중       = self.명중       + self.추가명중
-        self.최종회복       = self.회복       + self.추가회복
-        self.최종방어력     = self.방어력     + self.추가방어력
         self.최종HP         = self.HP         + self.추가HP
+        self.최종MP         = self.MP         + self.추가MP
+        self.최종공격력     = self.공격력     + self.추가공격력
+        self.최종방어력     = self.방어력     + self.추가방어력
+        self.최종명중       = self.명중       + self.추가명중
         self.최종회피       = self.회피       + self.추가회피
+        self.최종치명타     = self.치명타     + self.추가치명타
         self.최종치명타증폭 = self.치명타증폭 + self.추가치명타증폭
+        self.최종내성       = self.내성       + self.추가내성
+        self.최종회복       = self.회복       + self.추가회복
+        self.최종속도       = self.속도       + self.추가속도
 
     def 최종데미지(self):
         치명타적중 = False
@@ -514,14 +517,14 @@ class 캐릭터():
         f.write(f'INT : {self.INT}\n')
         f.write(f'CON : {self.CON}\n')
         f.write(f'LUK : {self.LUK}\n')
-        f.write(f'공격력 : {self.공격력}\n')
         f.write(f'HP : {self.HP}\n')
         f.write(f'MP : {self.MP}\n')
+        f.write(f'공격력 : {self.공격력}\n')
+        f.write(f'방어력 : {self.방어력}\n')
         f.write(f'명중 : {self.명중}\n')
         f.write(f'회피 : {self.회피}\n')
         f.write(f'치명타 : {self.치명타}\n')
         f.write(f'치명타증폭 : {self.치명타증폭}\n')
-        f.write(f'방어력 : {self.방어력}\n')
         f.write(f'내성 : {self.내성}\n')
         f.write(f'회복 : {self.회복}\n')
         f.write(f'속도 : {self.속도}\n')
@@ -530,14 +533,14 @@ class 캐릭터():
         f.write(f'추가INT : {self.추가INT}\n')
         f.write(f'추가CON : {self.추가CON}\n')
         f.write(f'추가LUK : {self.추가LUK}\n')
-        f.write(f'추가공격력 : {self.추가공격력}\n')
         f.write(f'추가HP : {self.추가HP}\n')
         f.write(f'추가MP : {self.추가MP}\n')
+        f.write(f'추가공격력 : {self.추가공격력}\n')
+        f.write(f'추가방어력 : {self.추가방어력}\n')
         f.write(f'추가명중 : {self.추가명중}\n')
         f.write(f'추가회피 : {self.추가회피}\n')
         f.write(f'추가치명타 : {self.추가치명타}\n')
         f.write(f'추가치명타증폭 : {self.추가치명타증폭}\n')
-        f.write(f'추가방어력 : {self.추가방어력}\n')
         f.write(f'추가내성 : {self.추가내성}\n')
         f.write(f'추가회복 : {self.추가회복}\n')
         f.write(f'추가속도 : {self.추가속도}\n')
@@ -546,14 +549,14 @@ class 캐릭터():
         f.write(f'최종INT : {self.최종INT}\n')
         f.write(f'최종CON : {self.최종CON}\n')
         f.write(f'최종LUK : {self.최종LUK}\n')
-        f.write(f'최종공격력 : {self.최종공격력}\n')
         f.write(f'최종HP : {self.최종HP}\n')
         f.write(f'최종MP : {self.최종MP}\n')
+        f.write(f'최종공격력 : {self.최종공격력}\n')
+        f.write(f'최종방어력 : {self.최종방어력}\n')
         f.write(f'최종명중 : {self.최종명중}\n')
         f.write(f'최종회피 : {self.최종회피}\n')
         f.write(f'최종치명타 : {self.최종치명타}\n')
         f.write(f'최종치명타증폭 : {self.최종치명타증폭}\n')
-        f.write(f'최종방어력 : {self.최종방어력}\n')
         f.write(f'최종내성 : {self.최종내성}\n')
         f.write(f'최종회복 : {self.최종회복}\n')
         f.write(f'최종속도 : {self.최종속도}\n')
@@ -878,14 +881,14 @@ class 캐릭터():
                 elif key_list[0] == 'INT':  self.INT  = int(value)
                 elif key_list[0] == 'CON':  self.CON  = int(value)
                 elif key_list[0] == 'LUK':  self.LUK  = int(value)
-                elif key_list[0] == '공격력': self.공격력 = int(value)
                 elif key_list[0] == 'HP': self.HP = int(value)
                 elif key_list[0] == 'MP': self.MP = int(value)
+                elif key_list[0] == '공격력': self.공격력 = int(value)
+                elif key_list[0] == '방어력': self.방어력 = int(value)
                 elif key_list[0] == '명중': self.명중 = int(value)
                 elif key_list[0] == '회피': self.회피 = float(value)
                 elif key_list[0] == '치명타': self.치명타 = float(value)
                 elif key_list[0] == '치명타증폭': self.치명타증폭 = float(value)
-                elif key_list[0] == '방어력': self.방어력 = int(value)
                 elif key_list[0] == '내성': self.내성 = float(value)
                 elif key_list[0] == '회복': self.회복 = int(value)
                 elif key_list[0] == '속도': self.속도 = int(value)
@@ -894,14 +897,14 @@ class 캐릭터():
                 elif key_list[0] == '추가INT':  self.추가INT  = int(value)
                 elif key_list[0] == '추가CON':  self.추가CON  = int(value)
                 elif key_list[0] == '추가LUK':  self.추가LUK  = int(value)
-                elif key_list[0] == '추가공격력': self.추가공격력 = int(value)
                 elif key_list[0] == '추가HP': self.추가HP = int(value)
                 elif key_list[0] == '추가MP': self.추가MP = int(value)
+                elif key_list[0] == '추가공격력': self.추가공격력 = int(value)
+                elif key_list[0] == '추가방어력': self.추가방어력 = int(value)
                 elif key_list[0] == '추가명중': self.추가명중 = int(value)
                 elif key_list[0] == '추가회피': self.추가회피 = float(value)
                 elif key_list[0] == '추가치명타': self.추가치명타 = float(value)
                 elif key_list[0] == '추가치명타증폭': self.추가치명타증폭 = float(value)
-                elif key_list[0] == '추가방어력': self.추가방어력 = int(value)
                 elif key_list[0] == '추가내성': self.추가내성 = float(value)
                 elif key_list[0] == '추가회복': self.추가회복 = int(value)
                 elif key_list[0] == '추가속도': self.추가속도 = int(value)
@@ -910,14 +913,14 @@ class 캐릭터():
                 elif key_list[0] == '최종INT':  self.최종INT  = int(value)
                 elif key_list[0] == '최종CON':  self.최종CON  = int(value)
                 elif key_list[0] == '최종LUK':  self.최종LUK  = int(value)
-                elif key_list[0] == '최종공격력': self.최종공격력 = int(value)
                 elif key_list[0] == '최종HP': self.최종HP = int(value)
                 elif key_list[0] == '최종MP': self.최종MP = int(value)
+                elif key_list[0] == '최종공격력': self.최종공격력 = int(value)
+                elif key_list[0] == '최종방어력': self.최종방어력 = int(value)
                 elif key_list[0] == '최종명중': self.최종명중 = int(value)
                 elif key_list[0] == '최종회피': self.최종회피 = float(value)
                 elif key_list[0] == '최종치명타': self.최종치명타 = float(value)
                 elif key_list[0] == '최종치명타증폭': self.최종치명타증폭 = float(value)
-                elif key_list[0] == '최종방어력': self.최종방어력 = int(value)
                 elif key_list[0] == '최종내성': self.최종내성 = float(value)
                 elif key_list[0] == '최종회복': self.최종회복 = int(value)
                 elif key_list[0] == '최종속도': self.최종속도 = int(value)
