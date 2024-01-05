@@ -1,10 +1,11 @@
 from django.urls import path
-#from rest_framework_jwt.views import obtain_jwt_token
 from . import views
+from rest_framework.authtoken.views import obtain_auth_token
 
 app_name = 'accounts'
 
 urlpatterns = [
-    path('signup/', views.signup),
-    #path('api-token-auth/', obtain_jwt_token),
+    path('', views.index, name='index'),
+    path('signup/', views.signup, name='signup'),
+    path('login/', obtain_auth_token, name='login') # 나중에 Custom Auth Token으로 변경하기
 ]
