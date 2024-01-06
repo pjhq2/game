@@ -7,19 +7,30 @@ from rest_framework.response import Response
 from django.http.response import JsonResponse
 
 # Create your views here.
+@api_view(['GET'])
 def index(request):
     articles_json = []
 
-    articles_json = {'results':
+    articles_json = {'results': [
         {
-            'id': 1,
+            'id': '1',
             'title': 'TEST',
             'content': 'TEST CONTENT',
             'created_at': 0000,
             'updated_at': 1111,
-        }
+        },
+        {
+            'id': '2',
+            'title': 'TEST2',
+            'content': 'TEST2 CONTENT',
+            'created_at': 0000,
+            'updated_at': 1111,
+        },
+    ]
     }
-    return JsonResponse(articles_json, safe=False)
+    return Response(articles_json, status=status.HTTP_200_OK)
+    #return JsonResponse(articles_json, safe=False)
+
 
 # decorators 관련해서도 잘 알아보고 다시 써야함
 @api_view(['POST'])
