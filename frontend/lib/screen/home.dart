@@ -41,17 +41,20 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: fetchTests,
       ),
       bottomNavigationBar: BottomAppBar(
-        child: ListView.builder(itemBuilder: (context, index){
-          final test = tests[index];
-          final id = test['id'];
-          final title = test['title'];
-          final content = test['content'];
-          final created_at = test['created_on'];
-          final updated_at = test['updated_on'];
-          return ListTile(
-            leading: Text(id),
-            title: Text(title),
-            subtitle: Text(content)
+        color: Colors.lightGreen,
+        child: ListView.builder(
+            itemCount: tests.length,
+            itemBuilder: (context, index){
+            final test = tests[index];
+            final id = test['id'];
+            final title = test['title'];
+            final content = test['content'];
+            // final created_at = test['created_on'];
+            // final updated_at = test['updated_on'];
+            return ListTile(
+              leading: Text(id),
+              title: Text(title),
+              subtitle: Text(content)
           );
         }),
       )
@@ -66,14 +69,14 @@ class _HomeScreenState extends State<HomeScreen> {
     final body = response.body;
     final json = jsonDecode(body);
     setState(() {
-      users = json['results'];
+        users = json['results'];
     });
     print('fetch completed');
   }
 
   void fetchTests() async {
     print('fetchTest called');
-    const url = 'http://127.0.0.1:8000/api/v1';
+    const url = 'http://127.0.0.1:8000/api/v1/';
     final uri = Uri.parse(url);
     final response = await http.get(uri);
     final body = response.body;
