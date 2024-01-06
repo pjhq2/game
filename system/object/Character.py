@@ -1,8 +1,8 @@
 import os
 import random
 
-from master       import trunc
-from color        import bcolors
+from system.master       import trunc
+from system.color        import bcolors
 
 from .Town        import 마을
 from .Weapon      import 무기
@@ -506,9 +506,9 @@ class 캐릭터():
 
     def 저장(self):
         마을.저장(self)
-        if not os.path.isdir('./save'):
-            os.mkdir('./save')
-        f = open(f'./save/{self.이름}.info', 'w')
+        if not os.path.isdir(os.getenv('SAVE_DIR')):
+            os.mkdir(os.getenv('SAVE_DIR'))
+        f = open(f'{os.getenv("SAVE_DIR")}/{self.이름}.info', 'w')
         f.write(f'이름 : {self.이름}\n')
         f.write(f'레벨 : {self.레벨}\n')
         f.write(f'직업 : {self.직업}\n')
@@ -840,9 +840,9 @@ class 캐릭터():
         f.close()
 
     def 불러오기(self, 캐릭터이름):
-        if not os.path.isfile(f'./save/{캐릭터이름}.info'):
+        if not os.path.isfile(f'{os.getenv("SAVE_DIR")}/{캐릭터이름}.info'):
             raise(NameError)
-        f = open(f'./save/{캐릭터이름}.info', 'r')
+        f = open(f'{os.getenv("SAVE_DIR")}/{캐릭터이름}.info', 'r')
         캐릭터정보리스트 = []
         스킬딕셔너리 = {}
         무기스킬딕셔너리 = {}

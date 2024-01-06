@@ -1,4 +1,4 @@
-from object.Skill import *
+from system.object.Skill import *
 
 def create_skill(스킬이름):
     # 캐릭터 스킬

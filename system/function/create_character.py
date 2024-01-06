@@ -1,9 +1,9 @@
-from object.Town      import 마을
-from object.Character import 캐릭터
-from object.Weapon    import 엑스칼리버
-from object.Weapon    import 진검
-from object.Weapon    import 나무몽둥이
-from object.Skill     import 습득_검격
+from system.object.Town      import 마을
+from system.object.Character import 캐릭터
+from system.object.Weapon    import 엑스칼리버
+from system.object.Weapon    import 진검
+from system.object.Weapon    import 나무몽둥이
+from system.object.Skill     import 습득_검격
 
 def test_create_character():
     for i in range(1000):

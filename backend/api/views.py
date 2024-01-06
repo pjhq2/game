@@ -6,9 +6,15 @@ from rest_framework.response import Response
 
 from django.http.response import JsonResponse
 
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
+import system
+
 # Create your views here.
 @api_view(['GET'])
 def index(request):
+    print(system.test.api.api())
     articles_json = []
 
     articles_json = {'results': [

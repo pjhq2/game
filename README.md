@@ -6,6 +6,7 @@
 - backend
 
 ## Basic Sequence
-1. `$ cd system`
-2. `$ py main.py`
+1. `source SourceMe`
+2. `$ cd system`
+3. `$ py main.py`
 

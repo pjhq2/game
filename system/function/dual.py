@@ -1,12 +1,12 @@
 import random
 
-from master            import fill_str_with_space
-from color             import bcolors
+from system.master            import fill_str_with_space
+from system.color             import bcolors
 
-from object.Town       import 마을
-from object.Character  import 캐릭터
-from object.Weapon     import 진검
-from object.Weapon     import 엑스칼리버
+from system.object.Town       import 마을
+from system.object.Character  import 캐릭터
+from system.object.Weapon     import 진검
+from system.object.Weapon     import 엑스칼리버
 
 from .create_character import create_character
 

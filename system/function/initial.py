@@ -1,12 +1,12 @@
 import os
 
-from object.Town      import 마을
-from object.Character import 캐릭터
+from system.object.Town      import 마을
+from system.object.Character import 캐릭터
 
 def get_all_character():
-    if not os.path.isdir('./save'):
-        os.mkdir('./save')
-    캐릭터파일리스트 = os.listdir('./save')
+    if not os.path.isdir(os.getenv('SAVE_DIR')):
+        os.mkdir(os.getenv('SAVE_DIR'))
+    캐릭터파일리스트 = os.listdir(os.getenv('SAVE_DIR'))
     캐릭터리스트     = []
     for 캐릭터파일 in 캐릭터파일리스트:
         캐릭터이름 = 캐릭터파일[:-5]

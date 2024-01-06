@@ -1,0 +1,2 @@
+export BASE_DIR=$PWD
+export SAVE_DIR="${BASE_DIR}/system/save"

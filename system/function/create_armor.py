@@ -1,4 +1,4 @@
-from object.Armor import *
+from system.object.Armor import *
 
 def create_armor(방어구이름):
     if   방어구이름 == '철투구': return 철투구()

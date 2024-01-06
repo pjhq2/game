@@ -1,7 +1,7 @@
 import random
 
-from master                   import trunc
-from color                    import bcolors
+from system.master                   import trunc
+from system.color                    import bcolors
 
 from .Character               import *
 from .Skill                   import 스킬

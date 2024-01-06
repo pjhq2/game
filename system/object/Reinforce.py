@@ -1,8 +1,8 @@
 import random
 
-from master  import trunc
-from master  import gprint
-from color   import bcolors
+from system.master  import trunc
+from system.master  import gprint
+from system.color   import bcolors
 
 from .Weapon import 무기
 from .Armor  import 갑옷

@@ -1,5 +1,5 @@
-from object.Town    import 마을
-from object.Monster import *
+from system.object.Town    import 마을
+from system.object.Monster import *
 
 def create_monster(몬스터이름):
     if   몬스터이름 == '주황버섯': return 몬스터('주황버섯')

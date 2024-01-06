@@ -1,8 +1,8 @@
 import random
 
-from master  import trunc
-from master  import gprint
-from master  import calc_str_length
+from system.master  import trunc
+from system.master  import gprint
+from system.master  import calc_str_length
 
 from .Skill  import *
 from .Item   import 장비아이템
@@ -17,9 +17,9 @@ class 무기(장비아이템):
         self.강화최소데미지 = 0
         self.강화최대데미지 = 0
         self.강화증폭       = 0
-        self.최종최소데미지 = 0
-        self.최종최대데미지 = 0
-        self.최종증폭       = 0
+        self.최종최소데미지 = self.최소데미지
+        self.최종최대데미지 = self.최대데미지
+        self.최종증폭       = self.증폭
         self.추가능력치     = {}
         self.무기스킬리스트 = []
 

@@ -1,10 +1,10 @@
 import random
 
-from master            import gprint
+from system.master            import gprint
 
-from object.Town       import 마을
-from object.Character  import 캐릭터
-from object.Weapon     import 무기
+from system.object.Town       import 마을
+from system.object.Character  import 캐릭터
+from system.object.Weapon     import 무기
 
 from .dual             import dual
 from .create_monster   import create_monster

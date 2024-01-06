@@ -1,8 +1,8 @@
 import random
 
-from master import gprint
-from master import trunc
-from master import calc_str_length
+from system.master import gprint
+from system.master import trunc
+from system.master import calc_str_length
 
 from .Item  import 장비아이템
 

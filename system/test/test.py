@@ -1,25 +1,25 @@
 import os
 
-from object.Town                 import 마을
-from object.Character            import 캐릭터
-from object.Reinforce            import 무기강화
-from object.Reinforce            import 갑옷강화
-from object.Reinforce            import 장비강화
-from object.Reinforce            import 스킬강화
-from object.Store                import 상점
+from system.object.Town                 import 마을
+from system.object.Character            import 캐릭터
+from system.object.Reinforce            import 무기강화
+from system.object.Reinforce            import 갑옷강화
+from system.object.Reinforce            import 장비강화
+from system.object.Reinforce            import 스킬강화
+from system.object.Store                import 상점
 
-from function.dual               import dual
-from function.hunt               import hunt
-from function.create_character   import test_create_character, create_character
-from function.create_monster     import create_monster
-from function.create_weapon      import create_weapon
-from function.create_armor       import create_armor
-from function.create_skill       import create_skill
-from function.initial            import initial_loading
-from function.create_consumption import create_consumption
+from system.function.dual               import dual
+from system.function.hunt               import hunt
+from system.function.create_character   import test_create_character, create_character
+from system.function.create_monster     import create_monster
+from system.function.create_weapon      import create_weapon
+from system.function.create_armor       import create_armor
+from system.function.create_skill       import create_skill
+from system.function.initial            import initial_loading
+from system.function.create_consumption import create_consumption
 
 def get_all_character():
-    캐릭터파일리스트 = os.listdir('./save')
+    캐릭터파일리스트 = os.listdir(os.getenv('SAVE_DIR'))
     캐릭터이름리스트 = []
     캐릭터리스트     = []
     for 캐릭터파일 in 캐릭터파일리스트:

@@ -1,26 +1,26 @@
 import os
 
-from master                    import gprint
+from system.master                    import gprint
 
-from object.Town               import 마을
-from object.Character          import 캐릭터
-from object.Reinforce          import 무기강화
-from object.Reinforce          import 갑옷강화
-from object.Reinforce          import 스킬강화
-from object.Store              import 상점
+from system.object.Town               import 마을
+from system.object.Character          import 캐릭터
+from system.object.Reinforce          import 무기강화
+from system.object.Reinforce          import 갑옷강화
+from system.object.Reinforce          import 스킬강화
+from system.object.Store              import 상점
 
-from function.initial          import initial_loading
-from function.create_character import create_character, test_create_character
-from function.create_weapon    import create_weapon
-from function.create_armor     import create_armor
-from function.create_skill     import create_skill
-from function.create_monster   import create_monster
-from function.dual             import dual
-from function.hunt             import hunt
+from system.function.initial          import initial_loading
+from system.function.create_character import create_character, test_create_character
+from system.function.create_weapon    import create_weapon
+from system.function.create_armor     import create_armor
+from system.function.create_skill     import create_skill
+from system.function.create_monster   import create_monster
+from system.function.dual             import dual
+from system.function.hunt             import hunt
 
 def character_file_sequence(캐릭터이름):
     # 캐릭터 없으면 생성
-    if not os.path.isfile(f'./save/{캐릭터이름}.info'):
+    if not os.path.isfile(f'{os.getenv("SAVE_DIR")}/{캐릭터이름}.info'):
         내캐릭터 = create_character(캐릭터이름)
     # 캐릭터 있으면 불러오기
     else:

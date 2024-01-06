@@ -1,5 +1,5 @@
-from master import gprint
-from master import calc_str_length
+from system.master import gprint
+from system.master import calc_str_length
 
 from .Consumption import 소비
 

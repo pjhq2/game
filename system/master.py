@@ -1,6 +1,6 @@
 import unicodedata
 
-from color import bcolors
+from .color import bcolors
 
 def fill_str_with_space(input_s="", max_size=60, fill_char=" "):
     """
