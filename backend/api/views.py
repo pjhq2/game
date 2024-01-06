@@ -14,27 +14,9 @@ import system
 # Create your views here.
 @api_view(['GET'])
 def index(request):
-    print(system.test.api.api())
-    articles_json = []
-
-    articles_json = {'results': [
-        {
-            'id': '1',
-            'title': 'TEST',
-            'content': 'TEST CONTENT',
-            'created_at': 0000,
-            'updated_at': 1111,
-        },
-        {
-            'id': '2',
-            'title': 'TEST2',
-            'content': 'TEST2 CONTENT',
-            'created_at': 0000,
-            'updated_at': 1111,
-        },
-    ]
-    }
-    return Response(articles_json, status=status.HTTP_200_OK)
+    weapon_info_json = []
+    weapon_info_json.append(system.test.api.temp())
+    return Response(weapon_info_json, status=status.HTTP_200_OK)
     #return JsonResponse(articles_json, safe=False)
 
 
