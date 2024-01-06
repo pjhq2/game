@@ -1,6 +1,11 @@
 # README
 
-- basic sequence
+## Directory
+- system
+- frontend
+- backend
 
-  `$ py main.py`
+## Basic Sequence
+1. `$ cd system`
+2. `$ py main.py`
 
