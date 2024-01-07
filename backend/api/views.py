@@ -14,8 +14,8 @@ import system
 # Create your views here.
 @api_view(['GET'])
 def index(request):
-    weapon_info_json = system.test.api.get_weapon_info()
-    return Response(weapon_info_json, status=status.HTTP_200_OK)
+    weapon_info_list = list().append(system.test.api.get_weapon_info())
+    return Response(weapon_info_list, status=status.HTTP_200_OK)
     #return JsonResponse(articles_json, safe=False)
 
 

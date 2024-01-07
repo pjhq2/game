@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/home.dart';
-import 'package:frontend/models/weapon.dart';
+// Models
+import 'package:frontend/models/weapon_model.dart';
+// Screens
+import 'package:frontend/screens/screen_home.dart';
+import 'package:frontend/screens/screen_weapon.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -11,8 +15,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Weapon(),
+    return MaterialApp(
+      title: 'Weapon App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: WeaponScreen(),
     );
   }
 }
