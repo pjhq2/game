@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/models/weapon_model.dart';
 import 'package:frontend/services/weapon_service.dart';
+import 'package:frontend/widgets/weapon_widget.dart';
 
 class WeaponScreen extends StatefulWidget {
   @override
