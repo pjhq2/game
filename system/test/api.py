@@ -31,13 +31,13 @@ def temp():
     
     return character_info(만패)
 
-def character_info(캐릭터):
+def character_info(캐릭터=None):
     if 캐릭터 == None:
         return 캐릭터
     else:
         return 캐릭터.__dict__
 
-def get_inventory_info(인벤토리):
+def get_inventory_info(인벤토리=None):
     if 인벤토리 == None:
         return 인벤토리
     else:
@@ -55,9 +55,10 @@ def get_inventory_info(인벤토리):
                         inventory_info['목록'][i] = get_armor_info(아이템)
         return inventory_info
 
-def get_weapon_info(무기):
+def get_weapon_info(무기=None):
     if 무기 == None:
-        return 무기
+        만패 = character_file_sequence('만패')
+        return get_weapon_info(만패.무기)
     else:
         weapon_info = 무기.__dict__
         for key in weapon_info.keys():
@@ -66,21 +67,21 @@ def get_weapon_info(무기):
                         weapon_info['무기스킬리스트'][i] = get_skill_info(무기스킬)            
         return weapon_info
 
-def get_armor_info(방어구):
+def get_armor_info(방어구=None):
     if 방어구 == None:
         return 방어구
     else:
         armor_info = 방어구.__dict__
         return armor_info
 
-def get_consumption_info(소비):
+def get_consumption_info(소비=None):
     if 소비 == None:
         return 소비
     else:
         consumption_info = 소비.__dict__
         return consumption_info
 
-def get_skill_info(스킬):
+def get_skill_info(스킬=None):
     if 스킬 == None:
         return 스킬
     else:
