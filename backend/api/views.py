@@ -14,8 +14,14 @@ import system
 # Create your views here.
 @api_view(['GET'])
 def index(request):
+<<<<<<< HEAD
     weapon_info_list = list().append(system.test.api.get_weapon_info())
     return Response(weapon_info_list, status=status.HTTP_200_OK)
+=======
+    weapon_info_json = []
+    weapon_info_json.append(system.test.api.temp())
+    return Response(weapon_info_json, status=status.HTTP_200_OK)
+>>>>>>> parent of e058dce (weapon model temp)
     #return JsonResponse(articles_json, safe=False)
 
 
