@@ -15,7 +15,7 @@ class WeaponModel {
   final int finalMinDamage;
   final int finalMaxDamage;
   final double finalAmp;
-  // final Map<String, int>? addiAbility;
+  final Map<String, int>? addiAbility;
   // final List<Map<String, dynamic>?> weaponSkillList;
 
   WeaponModel({
@@ -35,7 +35,7 @@ class WeaponModel {
     required this.finalMinDamage,
     required this.finalMaxDamage,
     required this.finalAmp,
-    // required this.addiAbility,
+    required this.addiAbility,
     // required this.weaponSkillList,
   });
 
@@ -59,7 +59,7 @@ class WeaponModel {
       finalMinDamage: json['최종최소데미지'],
       finalMaxDamage: json['최종최대데미지'],
       finalAmp: json['최종증폭'],
-      // addiAbility: json['추가능력치'] != null ? Map<String, int>.from(json['addiAbility']) : null,
+      addiAbility: json['추가능력치'] != null ? Map<String, int>.from(json['추가능력치']) : null,
       // weaponSkillList: json['무기스킬리스트'] as List<Map<String, dynamic>?>,
     );
   }

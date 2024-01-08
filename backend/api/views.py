@@ -14,8 +14,9 @@ import system
 # Create your views here.
 @api_view(['GET'])
 def index(request):
+    만패 = system.test.sequence.character_file_sequence('만패')
     weapon_info_list = list()
-    weapon_info_list.append(system.test.api.get_weapon_info())
+    weapon_info_list.append(system.test.api.get_weapon_info(만패.무기))
     print(weapon_info_list)
     return Response(weapon_info_list, status=status.HTTP_200_OK)
     #return JsonResponse(articles_json, safe=False)

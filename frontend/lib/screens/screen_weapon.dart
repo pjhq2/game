@@ -34,17 +34,8 @@ class _WeaponScreenState extends State<WeaponScreen> {
             return ListView.builder(
               itemCount: snapshot.data?.length ?? 0,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(snapshot.data![index].name),
-                  // 무기 상세 정보를 보기 위해 다른 화면으로 이동
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => WeaponDetailScreen(weapon: snapshot.data![index]),
-                      ),
-                    );
-                  },
+                return Container(
+                  child: WeaponWidget(weapon: snapshot.data![index],),
                 );
               },
             );

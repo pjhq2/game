@@ -57,14 +57,13 @@ def get_inventory_info(인벤토리=None):
 
 def get_weapon_info(무기=None):
     if 무기 == None:
-        만패 = character_file_sequence('만패')
-        return 만패.무기.__dict__
+        return 무기.__dict__
     else:
-        weapon_info = 무기.__dict__
+        weapon_info = 무기.__dict__        
         for key in weapon_info.keys():
             if key == '무기스킬리스트':
-                    for i, 무기스킬 in enumerate(weapon_info['무기스킬리스트']):
-                        weapon_info['무기스킬리스트'][i] = get_skill_info(무기스킬)            
+                for i, 무기스킬 in enumerate(weapon_info['무기스킬리스트']):
+                    weapon_info['무기스킬리스트'][i] = get_skill_info(무기스킬)            
         return weapon_info
 
 def get_armor_info(방어구=None):
