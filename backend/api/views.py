@@ -12,14 +12,26 @@ sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(
 import system
 
 # Create your views here.
-@api_view(['GET'])
 def index(request):
+    pass
+
+
+@api_view(['GET'])
+def weapon(request):
     만패 = system.test.sequence.character_file_sequence('만패')
     weapon_info_list = list()
     weapon_info_list.append(system.test.api.get_weapon_info(만패.무기))
     print(weapon_info_list)
     return Response(weapon_info_list, status=status.HTTP_200_OK)
     #return JsonResponse(articles_json, safe=False)
+
+@api_view(['GET'])
+def inventory(request):
+    만패 = system.test.sequence.character_file_sequence('만패')
+    inventory_info_list = list()
+    inventory_info_list.append(system.test.api.get_inventory_info(만패.인벤토리))
+    print(inventory_info_list)
+    return Response(inventory_info_list, status=status.HTTP_200_OK)
 
 
 # decorators 관련해서도 잘 알아보고 다시 써야함

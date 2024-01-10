@@ -4,6 +4,8 @@ import 'package:frontend/models/weapon_model.dart';
 // Screens
 import 'package:frontend/screens/screen_home.dart';
 import 'package:frontend/screens/screen_weapon.dart';
+import 'package:frontend/screens/screen_test.dart';
+import 'package:frontend/screens/screen_inventory.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +21,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: WeaponScreen(),
+      home: InventoryScreen(),
+      // home: WeaponScreen(),
+      // home: TestScreen(),
     );
   }
 }

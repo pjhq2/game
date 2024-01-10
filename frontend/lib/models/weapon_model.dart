@@ -16,7 +16,7 @@ class WeaponModel {
   final int finalMaxDamage;
   final double finalAmp;
   final Map<String, int>? addiAbility;
-  // final List<Map<String, dynamic>?> weaponSkillList;
+  final List<dynamic> weaponSkillList;
 
   WeaponModel({
     required this.id,
@@ -36,12 +36,10 @@ class WeaponModel {
     required this.finalMaxDamage,
     required this.finalAmp,
     required this.addiAbility,
-    // required this.weaponSkillList,
+    required this.weaponSkillList,
   });
 
   factory WeaponModel.fromJson(Map<String, dynamic> json) {
-    // print(json['추가능력치']);
-    // print(json['무기스킬리스트']);
     return WeaponModel(
       id: json['id'],
       name: json['이름'],
@@ -60,7 +58,7 @@ class WeaponModel {
       finalMaxDamage: json['최종최대데미지'],
       finalAmp: json['최종증폭'],
       addiAbility: json['추가능력치'] != null ? Map<String, int>.from(json['추가능력치']) : null,
-      // weaponSkillList: json['무기스킬리스트'] as List<Map<String, dynamic>?>,
+      weaponSkillList: json['무기스킬리스트'] as List<dynamic>,
     );
   }
 }

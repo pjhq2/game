@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:frontend/models/weapon_model.dart';
+import 'package:frontend/models/skill_model.dart';
 
 class WeaponWidget extends StatelessWidget {
   final WeaponModel weapon;
@@ -11,23 +11,38 @@ class WeaponWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var addiAbilityKeys = [];
+    var addiAbilityValues = [];
+    var weaponSkillListKeys = [];
+    var weaponSkillListValues = [];
+    weapon.addiAbility?.forEach((key, value) {
+      addiAbilityKeys.add(key);
+      addiAbilityValues.add(value);
+    });
+    for(int i=0; i<weapon.weaponSkillList.length; i++) {
+      weapon.weaponSkillList[i].forEach((key, value) {
+        weaponSkillListKeys.add(key);
+        weaponSkillListValues.add(value);
+      });
+    }
+
     return Container(
-      padding: EdgeInsets.all(20),
+      // padding: EdgeInsets.all(20),
+      padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
       decoration: BoxDecoration(
         color: Colors.black54,
         borderRadius: BorderRadius.circular(6),
         border: Border.all(
           color: Colors.black,
           width: 1,
-        ),  
+        ),
       ),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text('${weapon.name}', style: TextStyle(color: Colors.yellowAccent, fontWeight: FontWeight.w700),),
-              Text('(+${weapon.reinLevel})', style: TextStyle(color: Colors.white70))
+              Text('${weapon.name}(+${weapon.reinLevel})', style: TextStyle(color: Colors.yellowAccent, fontWeight: FontWeight.w700),),
             ],
           ),
           Row(
@@ -43,23 +58,27 @@ class WeaponWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                Text('등급', style: TextStyle(color: Colors.white70)),
-                Text('최소데미지', style: TextStyle(color: Colors.white70)),
-                Text('최대데미지', style: TextStyle(color: Colors.white70)),
-                Text('무기데미지', style: TextStyle(color: Colors.white70))
+                  Text('등급', style: TextStyle(color: Colors.white70)),
+                  Column(children: addiAbilityKeys.map((item) => Text(item, style: TextStyle(color: Colors.white70),)).toList()),
+                  Text('최소데미지', style: TextStyle(color: Colors.white70)),
+                  Text('최대데미지', style: TextStyle(color: Colors.white70)),
+                  Text('무기데미지', style: TextStyle(color: Colors.white70)),
+                  Text('무기스킬', style: TextStyle(color: Colors.white70)),
               ],
             ), flex: 4,),
-              Flexible(
-                child: Container(),
-                flex: 2,),
+            Flexible(
+              child: Container(),
+              flex: 2,),
             Flexible(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                Text('${weapon.gradeName}', style: TextStyle(color: Colors.white70)),
-                Text('${weapon.minDamage}(+${weapon.reinMinDamage})', style: TextStyle(color: Colors.white70)),
-                Text('${weapon.maxDamage}(+${weapon.reinMaxDamage})', style: TextStyle(color: Colors.white70)),
-                Text('${weapon.finalMinDamage} - ${weapon.finalMaxDamage}', style: TextStyle(color: Colors.white70))
+                  Text('${weapon.gradeName}', style: TextStyle(color: Colors.white70)),
+                  Column(children: addiAbilityValues.map((item) => Text('+${item}', style: TextStyle(color: Colors.white70),)).toList()),
+                  Text('${weapon.minDamage}(+${weapon.reinMinDamage})', style: TextStyle(color: Colors.white70)),
+                  Text('${weapon.maxDamage}(+${weapon.reinMaxDamage})', style: TextStyle(color: Colors.white70)),
+                  Text('${weapon.finalMinDamage} - ${weapon.finalMaxDamage}', style: TextStyle(color: Colors.white70)),
+                  Text('${weaponSkillListValues[0]} Lv.${weaponSkillListValues[1]}', style: TextStyle(color: Colors.white70)),
               ],
             ), flex: 4,)
           ],)
